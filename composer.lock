@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c1318eed142abbcd6e3df9abe2ae9681",
+    "content-hash": "3370fa0c0a3a45d19697cceb83fddfa5",
     "packages": [
         {
             "name": "brick/math",
@@ -2894,16 +2894,16 @@
         },
         {
             "name": "pjmarshall1/laravel-commands",
-            "version": "v1.0.0",
+            "version": "v1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pjmarshall1/laravel-commands.git",
-                "reference": "a3c079aa9575e682726068adc260d1adc36034b9"
+                "reference": "2590e1b5e30f02db025b99a00ef05808570a8e49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pjmarshall1/laravel-commands/zipball/a3c079aa9575e682726068adc260d1adc36034b9",
-                "reference": "a3c079aa9575e682726068adc260d1adc36034b9",
+                "url": "https://api.github.com/repos/pjmarshall1/laravel-commands/zipball/2590e1b5e30f02db025b99a00ef05808570a8e49",
+                "reference": "2590e1b5e30f02db025b99a00ef05808570a8e49",
                 "shasum": ""
             },
             "require": {
@@ -2928,9 +2928,9 @@
             "description": "A package",
             "support": {
                 "issues": "https://github.com/pjmarshall1/laravel-commands/issues",
-                "source": "https://github.com/pjmarshall1/laravel-commands/tree/v1.0.0"
+                "source": "https://github.com/pjmarshall1/laravel-commands/tree/v1.1"
             },
-            "time": "2024-11-21T13:07:05+00:00"
+            "time": "2024-12-02T20:14:18+00:00"
         },
         {
             "name": "psr/clock",

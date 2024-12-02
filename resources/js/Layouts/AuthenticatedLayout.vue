@@ -8,7 +8,7 @@ import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import Dropdown from "@/Components/Dropdown.vue";
 import ToastContainer from "@/Components/ToastContainer.vue";
 
-import {RiArrowLeftSLine, RiDashboardLine, RiLogoutCircleLine, RiUser3Line} from "vue-remix-icons";
+import {RiArrowLeftSLine, RiDashboardLine, RiLogoutCircleLine, RiQrScan2Line, RiUser3Line} from "vue-remix-icons";
 
 const sidebarOpen = useLocalStorage('sidebarOpen', true);
 const {toast} = useToast();
@@ -24,6 +24,12 @@ const navigation = [
         icon: RiDashboardLine,
         current: route().current('dashboard.index')
     },
+    {
+        name: 'Scans',
+        href: route('scans.index'),
+        icon: RiQrScan2Line,
+        current: route().current('scans.index')
+    }
 ];
 
 const userNavigation = [
@@ -145,7 +151,7 @@ onUnmounted(() => {
                 </template>
             </header>
 
-            <main class="h-full w-full p-5">
+            <main class="w-full p-5">
                 <slot/>
             </main>
         </div>

@@ -14,11 +14,4 @@ class ScanAlert extends Model
     {
         return $this->belongsTo(Scan::class);
     }
-
-    protected function casts(): array
-    {
-        return [
-            'timestamp' => 'timestamp',
-        ];
-    }
 }

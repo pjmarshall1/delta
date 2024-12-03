@@ -18,6 +18,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        Scan::factory(50)->hasScanAlerts(5)->create();
+        Scan::factory(50)->hasAlerts(5)->create();
     }
 }

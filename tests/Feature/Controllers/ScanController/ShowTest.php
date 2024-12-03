@@ -21,9 +21,9 @@ it('should return the correct component', function () {
 it('passes a scan with alerts to the view', function () {
     $this->withoutExceptionHandling();
 
-    $scan = Scan::factory()->hasScanAlerts(3)->create();
+    $scan = Scan::factory()->hasAlerts(3)->create();
 
     actingAs(User::factory()->create())
         ->get(route('scans.show', $scan->id))
-        ->assertHasResource('scan', ScanResource::make($scan->refresh()->load('scanAlerts')));
+        ->assertHasResource('scan', ScanResource::make($scan->refresh()->load('alerts')));
 });

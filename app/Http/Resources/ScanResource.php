@@ -20,7 +20,7 @@ class ScanResource extends JsonResource
             'gap_percent' => $this->gap_percent,
             'float' => $this->float,
             'short_interest' => $this->short_interest,
-            'scan_alerts' => ScanAlertResource::collection($this->whenLoaded('scanAlerts')),
+            'alerts' => ScanAlertResource::collection($this->whenLoaded('alerts')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

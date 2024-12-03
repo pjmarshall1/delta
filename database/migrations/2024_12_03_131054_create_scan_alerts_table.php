@@ -17,9 +17,9 @@ return new class extends Migration
             $table->bigInteger('volume');
             $table->bigInteger('float');
             $table->bigInteger('relative_volume_daily');
-            $table->bigInteger('relative_volume_five_minute');
+            $table->bigInteger('relative_volume_five');
             $table->unsignedBigInteger('gap_percent');
-            $table->unsignedBigInteger('change_from_close_percent');
+            $table->unsignedBigInteger('change_percent');
             $table->bigInteger('short_interest');
             $table->string('strategy_name');
             $table->timestamps();

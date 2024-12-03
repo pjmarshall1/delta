@@ -10,7 +10,7 @@ class Scan extends Model
 {
     use HasFactory;
 
-    public function scanAlerts(): HasMany
+    public function alerts(): HasMany
     {
         return $this->hasMany(ScanAlert::class);
     }

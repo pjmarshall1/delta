@@ -13,4 +13,11 @@ class ScanController extends Controller
             'scans' => ScanResource::collection(Scan::paginate(25)),
         ]);
     }
+
+    public function show(Scan $scan)
+    {
+        return inertia('Scans/Show', [
+            'scan' => new ScanResource($scan),
+        ]);
+    }
 }

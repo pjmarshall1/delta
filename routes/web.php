@@ -14,6 +14,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::get('/scans', [ScanController::class, 'index'])->name('scans.index');
+    Route::get('/scans/{scan}', [ScanController::class, 'show'])->name('scans.show');
 });
 
 // Profile Routes

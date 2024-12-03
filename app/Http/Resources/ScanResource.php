@@ -2,26 +2,14 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Scan;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Date;
 
-/**
- * @property int $id
- * @property string $timestamp
- * @property string $symbol
- * @property int $previous_close
- * @property int $gap_percent
- * @property int $float
- * @property int $short_interest
- */
+/** @mixin Scan */
 class ScanResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         return [
@@ -32,6 +20,9 @@ class ScanResource extends JsonResource
             'gap_percent' => $this->gap_percent,
             'float' => $this->float,
             'short_interest' => $this->short_interest,
+            'scan_alerts' => ScanAlertResource::collection($this->whenLoaded('scanAlerts')),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

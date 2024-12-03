@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Scan;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -16,5 +17,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        Scan::factory(50)->hasScanAlerts(5)->create();
     }
 }

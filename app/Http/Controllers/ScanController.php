@@ -17,7 +17,7 @@ class ScanController extends Controller
     public function show(Scan $scan)
     {
         return inertia('Scans/Show', [
-            'scan' => new ScanResource($scan),
+            'scan' => new ScanResource($scan->load('scanAlerts')),
         ]);
     }
 }

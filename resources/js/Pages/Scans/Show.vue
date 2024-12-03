@@ -42,6 +42,7 @@ const props = defineProps({
                 </dl>
             </Card>
             <Card class="col-span-8 aspect-square" title="Chart">
+
             </Card>
         </div>
     </AuthenticatedLayout>

@@ -18,10 +18,12 @@ it('should return the correct component', function () {
         ->assertComponent('Scans/Show');
 });
 
-it('passes a scan to the view', function () {
-    $scan = Scan::factory()->create();
+it('passes a scan with alerts to the view', function () {
+    $this->withoutExceptionHandling();
+
+    $scan = Scan::factory()->hasScanAlerts(3)->create();
 
     actingAs(User::factory()->create())
         ->get(route('scans.show', $scan->id))
-        ->assertHasResource('scan', ScanResource::make($scan));
+        ->assertHasResource('scan', ScanResource::make($scan->refresh()->load('scanAlerts')));
 });

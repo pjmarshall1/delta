@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Profile\ProfilePhotoController;
 use App\Http\Controllers\ScanController;
+use App\Http\Controllers\ScanImportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,6 +16,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/scans', [ScanController::class, 'index'])->name('scans.index');
     Route::get('/scans/{scan}', [ScanController::class, 'show'])->name('scans.show');
+    Route::post('/scans/import', ScanImportController::class)->name('scans.import');
 });
 
 // Profile Routes

@@ -18,16 +18,16 @@ const props = defineProps({
 
 <template>
     <AuthenticatedLayout
-        :title="`${scan.symbol} - ${dayjs.utc(scan.date).tz(dayjs.tz.guess()).format('ddd, MMM DD, YYYY')}`">
+        :title="`${scan.symbol} - ${dayjs(scan.date).format('ddd, MMM DD, YYYY')}`">
         <div class="grid grid-cols-12 gap-5">
             <Card class="col-span-4">
                 <TabContainer>
                     <Tab name="Details">
                         <dl class="px-2">
                             <div class="p-3 flex items-center justify-between">
-                                <dt class="text-sm font-semibold tracking-wide text-gray-500">Previous Close</dt>
+                                <dt class="text-sm font-semibold tracking-wide text-gray-500">Price</dt>
                                 <dd class="text-sm font-medium tracking-wide text-gray-700">
-                                    {{ numeral(scan.previous_close / 10000).format('$0,0[.][0000]') }}
+                                    {{ numeral(scan.price / 10000).format('$0,0[.][0000]') }}
                                 </dd>
                             </div>
                             <div class="p-3 flex items-center justify-between">
@@ -51,8 +51,7 @@ const props = defineProps({
                         </dl>
                     </Tab>
                     <Tab name="Alerts">
-                        <div class="bg-red-500"/>
-                        <div class="flex items-center justify-between w-full px-5 py-3">
+                        <div class="flex items-center justify-between w-full px-5 py-3 overflow-y-auto">
                             <div class="font-medium tracking-wide text-xs text-gray-500">
                                 {{ props.scan.alerts.length }}
                                 alerts
@@ -67,12 +66,11 @@ const props = defineProps({
                                          :columns="['time', 'price', 'volume', 'gap_percent']"
                                          class="items-stretch"
                         />
-
-
                     </Tab>
                 </TabContainer>
             </Card>
-            <Card class="col-span-8 aspect-square" title="Chart">
+            <Card class="col-span-8" title="Chart">
+                <div class="w-full aspect-video bg-red-500"></div>
 
             </Card>
         </div>

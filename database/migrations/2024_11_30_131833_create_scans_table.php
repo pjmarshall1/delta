@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->dateTime('timestamp');
             $table->string('symbol');
-            $table->bigInteger('previous_close')->nullable();
+            $table->bigInteger('price')->nullable();
             $table->bigInteger('gap_percent')->nullable();
             $table->bigInteger('float');
             $table->bigInteger('short_interest');
+            $table->integer('p_count')->default(0);
+            $table->integer('m_count')->default(0);
+            $table->integer('a_count')->default(0);
             $table->timestamps();
         });
     }

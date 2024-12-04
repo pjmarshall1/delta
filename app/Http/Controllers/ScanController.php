@@ -10,7 +10,7 @@ class ScanController extends Controller
     public function index()
     {
         return inertia('Scans/Index', [
-            'scans' => ScanResource::collection(Scan::paginate(25)),
+            'scans' => ScanResource::collection(Scan::orderBy('timestamp', 'desc')->paginate(25)->onEachSide(2)),
         ]);
     }
 

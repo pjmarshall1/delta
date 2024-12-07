@@ -14,11 +14,11 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="px-4 sm:px-6 lg:px-8">
+    <div class="px-8">
         <div class="flow-root">
-            <div class="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
-                <div class="inline-block min-w-full py-2 align-middle">
-                    <table class="min-w-full table-fixed border border-gray-200">
+            <div class="-mx-8">
+                <div class="inline-block min-w-full align-middle">
+                    <table class="min-w-full table-fixed">
                         <thead>
                         <tr>
                             <th v-if="props.columns.includes('date')"
@@ -54,12 +54,12 @@ const props = defineProps({
                             <th v-if="props.columns.includes('relative_volume_daily')"
                                 class="sticky -top-0.5 px-3 py-2.5 bg-gray-200 text-center text-xs font-semibold text-gray-500"
                                 scope="col">
-                                <span>Relative Volume</span><br/><span>(Daily)</span>
+                                Rel Vol (D)
                             </th>
                             <th v-if="props.columns.includes('relative_volume_five_minute')"
                                 class="sticky -top-0.5 px-3 py-2.5 bg-gray-200 text-center text-xs font-semibold text-gray-500"
                                 scope="col">
-                                <span>Relative Volume</span><br/><span>(5 Min)</span>
+                                Rel Vol (5m)
                             </th>
                             <th v-if="props.columns.includes('gap_percent')"
                                 class="sticky -top-0.5 px-3 py-2.5 bg-gray-200 text-center text-xs font-semibold text-gray-500"
@@ -88,12 +88,14 @@ const props = defineProps({
                             <td v-if="props.columns.includes('date')" class="px-3 py-3">
                                 <span
                                     class="block w-full text-center text-xs font-medium text-gray-500">
-                                    {{ dayjs.utc(alert.timestamp).tz(dayjs.tz.guess()).format('MM-DD-YYYY') }}</span>
+                                    {{ dayjs.utc(alert.timestamp).tz(dayjs.tz.guess()).format('MM-DD-YYYY')
+                                    }}</span>
                             </td>
                             <td v-if="props.columns.includes('time')" class="px-3 py-3">
                                 <span
                                     class="block w-full text-center text-xs font-medium text-gray-500">
-                                    {{ dayjs.utc(alert.timestamp).tz(dayjs.tz.guess()).format('HH:mm:ss') }}</span>
+                                    {{ dayjs.utc(alert.timestamp).tz(dayjs.tz.guess()).format('HH:mm:ss')
+                                    }}</span>
                             </td>
                             <td v-if="props.columns.includes('symbol')" class="px-3 py-3">
                                 <span
@@ -103,47 +105,56 @@ const props = defineProps({
                             <td v-if="props.columns.includes('price')" class="px-3 py-3">
                                 <span
                                     class="block w-full text-center text-xs font-medium text-gray-500">
-                                    {{ numeral(alert.price / 10000).format('$0,0[.][0000]') }}</span>
+                                    {{ numeral(alert.price / 10000).format('$0,0[.][0000]') }}
+                                </span>
                             </td>
                             <td v-if="props.columns.includes('float')" class="px-3 py-3">
                                 <span
                                     class="block w-full text-center text-xs font-medium text-gray-500">
-                                    {{ numeral(alert.float).format('0,0[.][00]a') }}</span>
+                                        {{ numeral(alert.float).format('0,0[.][00]a') }}
+                                </span>
                             </td>
                             <td v-if="props.columns.includes('volume')" class="px-3 py-3">
                                 <span
                                     class="block w-full text-center text-xs font-medium text-gray-500">
-                                    {{ numeral(alert.float).format('0,0[.][00]a') }}</span>
+                                        {{ numeral(alert.volume).format('0,0[.][00]a') }}
+                                </span>
                             </td>
-                            <td v-if="props.columns.includes('relative_volume')" class="px-3 py-3">
+                            <td v-if="props.columns.includes('relative_volume_daily')" class="px-3 py-3">
                                 <span
                                     class="block w-full text-center text-xs font-medium text-gray-500">
-                                    {{ numeral(alert.relative_volume_daily).format('0,0[.][00]a') }}</span>
+                                    {{ numeral(alert.relative_volume_daily).format('0,0[.][00]a') }}
+                                </span>
                             </td>
                             <td v-if="props.columns.includes('relative_volume_five_minute')" class="px-3 py-3">
                                 <span
                                     class="block w-full text-center text-xs font-medium text-gray-500">
-                                    {{ numeral(alert.relative_volume_five_minute).format('0,0[.][00]a') }}</span>
+                                    {{ numeral(alert.relative_volume_five_minute).format('0,0[.][00]a') }}
+                                </span>
                             </td>
                             <td v-if="props.columns.includes('gap_percent')" class="px-3 py-3">
                                 <span
                                     class="block w-full text-center text-xs font-medium text-gray-500">
-                                    {{ numeral(alert.gap_percent / 10000).format('0[.][00]%') }}</span>
+                                    {{ numeral(alert.gap_percent / 10000).format('0[.][00]%') }}
+                                </span>
                             </td>
                             <td v-if="props.columns.includes('change_percent')" class="px-3 py-3">
                                 <span
                                     class="block w-full text-center text-xs font-medium text-gray-500">
-                                    {{ numeral(alert.change_percent / 10000).format('0[.][00]%') }}</span>
+                                    {{ numeral(alert.change_percent / 10000).format('0[.][00]%') }}
+                                </span>
                             </td>
                             <td v-if="props.columns.includes('short_interest')" class="px-3 py-3">
                                 <span
                                     class="block w-full text-center text-xs font-medium text-gray-500">
-                                    {{ numeral(alert.short_interest).format('0,0[.][00]a') }}</span>
+                                    {{ numeral(alert.short_interest).format('0,0[.][00]a') }}
+                                </span>
                             </td>
                             <td v-if="props.columns.includes('strategy')" class="px-3 py-3">
                                 <span
                                     class="block w-full text-center text-xs font-medium text-gray-500">
-                                    {{ alert.strategy }}</span>
+                                    {{ alert.strategy_name }}
+                                </span>
                             </td>
                         </tr>
                         </tbody>

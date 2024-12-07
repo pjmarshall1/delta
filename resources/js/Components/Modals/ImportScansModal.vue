@@ -40,28 +40,22 @@ const handleFileUploaderStatusUpdated = (status) => {
 </script>
 
 <template>
-    <Modal :closeable="props.closeable" :show="show" @close="emit('onCancel')">
-        <div class="p-8 space-y-5">
-            <div class="bg-white">
-                <h3 class="text-base font-semibold leading-6 text-gray-900">Import Scans</h3>
+    <Modal :closeable="props.closeable" :show="show" title="Import Scans" v-on:close="emit('onCancel')">
+        <div class="flex flex-col space-y-4 p-8">
+            <div class="space-y-4">
+                <div class="space-y-2">
+                    <InputLabel for="filePond" value="Upload a file to import"/>
+                    <FileUploader ref="fileUploader"
+                                  :namePattern="/^\d{8}_Momo\.csv$/"
+                                  :uploadUrl="route('scans.import')"
+                                  class="h-16 w-full bg-gray-200 border border-gray-300 rounded-lg"
+                                  v-on:statusUpdated="handleFileUploaderStatusUpdated"
+                    />
+                </div>
             </div>
-
-            <div class="flex flex-col space-y-4">
-                <div class="space-y-4">
-                    <div class="space-y-2">
-                        <InputLabel for="filePond" value="Upload a file to import"/>
-                        <FileUploader ref="fileUploader"
-                                      :namePattern="/^\d{8}_Momo\.csv$/"
-                                      :uploadUrl="route('scans.import')"
-                                      class="h-16 w-full bg-gray-200 border border-gray-300 rounded-lg"
-                                      @onStatusUpdated="handleFileUploaderStatusUpdated"
-                        />
-                    </div>
-                </div>
-                <div class="w-full flex items-center justify-end space-x-5">
-                    <SecondaryButton @click="emit('onCancel')">Cancel</SecondaryButton>
-                    <PrimaryButton @click="handleUploadButtonClick">Upload</PrimaryButton>
-                </div>
+            <div class="w-full flex items-center justify-end space-x-5">
+                <SecondaryButton @click="emit('onCancel')">Cancel</SecondaryButton>
+                <PrimaryButton @click="handleUploadButtonClick">Upload</PrimaryButton>
             </div>
         </div>
     </Modal>

@@ -41,7 +41,7 @@ const handleScanSelected = (scan) => {
 
         <div :style="`height: ${height - 104}px`" class="w-full">
             <Card class="h-full flex flex-col">
-                <div class="w-full overflow-y-auto">
+                <div class="w-full overflow-y-auto" style="scrollbar-gutter: unset">
                     <div class="inline-block w-full align-middle">
                         <div class="relative">
                             <table class="w-full table-fixed">
@@ -60,7 +60,7 @@ const handleScanSelected = (scan) => {
                                     </th>
                                     <th class="sticky top-0 px-3 py-5 bg-gray-200 text-center text-xs font-semibold uppercase tracking-wide text-gray-500"
                                         scope="col">
-                                        Gap
+                                        Gap %
                                     </th>
                                     <th class="sticky top-0 px-3 py-5 bg-gray-200 text-center text-xs font-semibold uppercase tracking-wide text-gray-500"
                                         scope="col">
@@ -145,3 +145,7 @@ const handleScanSelected = (scan) => {
                       @onCancel="showImportModal = false"
                       @onUpload="showImportModal = false"/>
 </template>
+
+<style scoped>
+
+</style>

@@ -1,12 +1,17 @@
 <script setup>
+import {useWindowSize} from "@vueuse/core";
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Card from "@/Components/Card.vue";
 import Tab from "@/Components/Tabs/Tab.vue";
 import TabContainer from "@/Components/Tabs/TabContainer.vue";
 import ScanAlertsTable from "@/Components/Tables/ScanAlertsTable.vue";
+import ScanAlertsTableModal from "@/Components/Modals/ScanAlertsTableModal.vue";
 
 import {RiExpandDiagonalLine} from "vue-remix-icons";
+import {ref} from "vue";
+
+const {height} = useWindowSize();
 
 const props = defineProps({
     scan: {
@@ -14,13 +19,17 @@ const props = defineProps({
         required: true,
     },
 });
+
+const showScanTableModal = ref(false);
+
 </script>
 
 <template>
     <AuthenticatedLayout
-        :title="`${scan.symbol} - ${dayjs(scan.date).format('ddd, MMM DD, YYYY')}`">
+        :title="`${scan.symbol} - ${  dayjs(scan.date).format('ddd, MMM DD, YYYY')}`">
+
         <div class="grid grid-cols-12 gap-5">
-            <Card class="col-span-4">
+            <Card :style="`height: ${height - 104}px`" c class="col-span-4 overflow-hidden">
                 <TabContainer>
                     <Tab name="Details">
                         <dl class="px-2">
@@ -51,28 +60,35 @@ const props = defineProps({
                         </dl>
                     </Tab>
                     <Tab name="Alerts">
-                        <div class="flex items-center justify-between w-full px-5 py-3 overflow-y-auto">
-                            <div class="font-medium tracking-wide text-xs text-gray-500">
+                        <div
+                            class="flex items-center justify-between w-full px-5 py-3">
+                            <div class="font-semibold tracking-wide text-xs text-gray-500">
                                 {{ props.scan.alerts.length }}
                                 alerts
                             </div>
-                            <button class="border-0 flex space-x-1 font-medium tracking-wide text-xs text-gray-500">
-                                <RiExpandDiagonalLine class="size-4 text-gray-500"/>
-
+                            <button
+                                class="border-0 flex space-x-1 font-semibold tracking-wide text-xs text-gray-500 hover:text-gray-900"
+                                v-on:click="showScanTableModal = true">
+                                <RiExpandDiagonalLine class="size-4"/>
                                 <span class="block">Expand</span>
                             </button>
                         </div>
-                        <ScanAlertsTable :alerts="props.scan.alerts"
-                                         :columns="['time', 'price', 'volume', 'gap_percent']"
-                                         class="items-stretch"
-                        />
+                        <div
+                            :style="`height: ${height - 192}px`" class="h-full overflow-y-auto">
+                            <ScanAlertsTable :alerts="props.scan.alerts"
+                                             :columns="['time', 'price', 'volume', 'change_percent']"
+                                             class="items-stretch"/>
+                        </div>
                     </Tab>
                 </TabContainer>
             </Card>
-            <Card class="col-span-8" title="Chart">
-                <div class="w-full aspect-video bg-red-500"></div>
+            <Card class="col-span-8 h-full" title="Chart">
+                <div class="w-full"></div>
 
             </Card>
         </div>
+
+        <ScanAlertsTableModal :alerts="props.scan.alerts" :show="showScanTableModal"
+                              v-on:close="showScanTableModal = false"/>
     </AuthenticatedLayout>
 </template>

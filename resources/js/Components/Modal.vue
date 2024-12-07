@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import {computed, onMounted, onUnmounted, ref, watch} from 'vue';
 
 const props = defineProps({
     show: {
@@ -13,6 +13,9 @@ const props = defineProps({
     closeable: {
         type: Boolean,
         default: true,
+    },
+    title: {
+        type: String,
     },
 });
 
@@ -70,8 +73,8 @@ const maxWidthClass = computed(() => {
 </script>
 
 <template>
-    <dialog class="z-50 m-0 min-h-full min-w-full overflow-y-auto bg-transparent backdrop:bg-transparent" ref="dialog">
-        <div class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50" scroll-region>
+    <dialog ref="dialog" class="z-50 m-0 min-h-full min-w-full overflow-y-auto bg-transparent backdrop:bg-transparent">
+        <div class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50">
             <transition
                 enter-active-class="ease-out duration-300"
                 enter-from-class="opacity-0"
@@ -80,8 +83,8 @@ const maxWidthClass = computed(() => {
                 leave-from-class="opacity-100"
                 leave-to-class="opacity-0"
             >
-                <div v-show="show" class="fixed inset-0 transform transition-all" @click="close">
-                    <div class="absolute inset-0 bg-gray-500 opacity-75" />
+                <div v-show="show" class="fixed inset-0 transform transition-all" v-on:click="close">
+                    <div class="absolute inset-0 bg-gray-500 opacity-75"/>
                 </div>
             </transition>
 
@@ -94,7 +97,25 @@ const maxWidthClass = computed(() => {
                 leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
                 <div v-show="show" class="h-full w-full flex items-center justify-center">
-                    <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto" :class="maxWidthClass">
+                    <div
+                        :class="maxWidthClass"
+                        class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">
+
+                        <div v-if="props.title || props.closeable"
+                             class="p-5 bg-white w-full flex flex-none items-center justify-between">
+
+                            <span v-if="props.title" class="font-medium text-xl text-gray-900">{{ props.title }}</span>
+
+                            <button v-if="props.closeable" class="ml-auto" v-on:click="close">
+                                <svg class="size-6 text-gray-500 hover:text-gray-900 duration-300" fill="currentColor"
+                                     viewBox="0 0 24 24"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                    <path
+                                        d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path>
+                                </svg>
+                            </button>
+                        </div>
                         <slot v-if="showSlot"/>
                     </div>
                 </div>

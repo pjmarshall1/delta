@@ -41,6 +41,7 @@ return [
         36 => 'Tighten\\Ziggy\\ZiggyServiceProvider',
         37 => 'App\\Providers\\AppServiceProvider',
         38 => 'App\\Providers\\TestingServiceProvider',
+        39 => 'App\\Providers\\MarketDataServiceProvider',
     ],
     'eager' => [
         0 => 'Illuminate\\Auth\\AuthServiceProvider',
@@ -65,6 +66,7 @@ return [
         19 => 'Tighten\\Ziggy\\ZiggyServiceProvider',
         20 => 'App\\Providers\\AppServiceProvider',
         21 => 'App\\Providers\\TestingServiceProvider',
+        22 => 'App\\Providers\\MarketDataServiceProvider',
     ],
     'deferred' => [
         'Illuminate\\Broadcasting\\BroadcastManager' => 'Illuminate\\Broadcasting\\BroadcastServiceProvider',

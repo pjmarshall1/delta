@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AggregateController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Profile\ProfilePhotoController;
@@ -17,6 +18,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/scans', [ScanController::class, 'index'])->name('scans.index');
     Route::get('/scans/{scan}', [ScanController::class, 'show'])->name('scans.show');
     Route::post('/scans/import', ScanImportController::class)->name('scans.import');
+
+    Route::get('/aggregate', AggregateController::class)->name('aggregate');
 });
 
 // Profile Routes

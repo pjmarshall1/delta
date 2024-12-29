@@ -17,11 +17,10 @@ class Aggregate implements AggregateInterface
 
     public function fetch(string $symbol, int $multiplier, string $timespan, string $startDate, string $endDate): array
     {
-        $response = Http::get("{$this->endpoint}/ticker/{$symbol}/range/{$multiplier}/{$timespan}/{$startDate}/{$endDate}", [
-            'apiKey' => $this->apiKey,
-        ]);
+        $url = "{$this->endpoint}/ticker/{$symbol}/range/{$multiplier}/{$timespan}/{$startDate}/{$endDate}";
+        $response = Http::get($url, ['apiKey' => $this->apiKey]);
 
-        if (! $response->successful()) {
+        if (! $response->successful() || ! isset($response['results'])) {
             return [
                 'status' => 'error',
                 'message' => 'Failed to fetch aggregate data',
@@ -29,7 +28,17 @@ class Aggregate implements AggregateInterface
             ];
         }
 
-        return $response->json();
+        $data = $response['results'];
+
+        while ($nextUrl = $response['next_url'] ?? null) {
+            $response = Http::get($nextUrl, ['apiKey' => $this->apiKey]);
+            $data = array_merge($data, $response['results'] ?? []);
+        }
+
+        return [
+            'status' => 'success',
+            'results' => $data,
+        ];
     }
 
     public function normalize(array $data): array

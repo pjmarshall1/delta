@@ -3,6 +3,7 @@
 use App\Http\Resources\ScanResource;
 use App\Models\Scan;
 use App\Models\User;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 

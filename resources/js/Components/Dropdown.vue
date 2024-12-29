@@ -2,13 +2,17 @@
 import {onMounted, onUnmounted, ref} from 'vue';
 
 const props = defineProps({
+    autoClose: {
+        type: Boolean,
+        default: true,
+    },
     dropdownClasses: {
         type: String,
         default: 'mt-2 w-48',
     },
     contentClasses: {
         type: String,
-        default: 'py-1 bg-white',
+        default: 'bg-white',
     },
 });
 
@@ -27,7 +31,7 @@ const open = ref(false);
 <template>
     <div>
         <div v-on:click="open = !open">
-            <slot name="trigger" :active="open"/>
+            <slot :active="open" name="trigger"/>
         </div>
 
         <!-- Full Screen Dropdown Overlay -->
@@ -42,11 +46,11 @@ const open = ref(false);
             leave-from-class="opacity-100 scale-100"
             leave-to-class="opacity-0 scale-95"
         >
-            <div v-show="open" v-on:click="open = false"
+            <div v-show="open" :class="dropdownClasses"
                  class="absolute z-50 rounded-md shadow-lg"
-                :class="dropdownClasses" style="display: none"
+                 style="display: none" v-on:click="open = !autoClose"
             >
-                <div class="rounded-md ring-1 ring-black ring-opacity-5" :class="contentClasses">
+                <div :class="contentClasses" class="rounded-md ring-1 ring-black ring-opacity-5">
                     <slot name="content"/>
                 </div>
             </div>

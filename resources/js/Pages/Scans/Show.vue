@@ -1,4 +1,5 @@
 <script setup>
+import {computed, ref} from "vue";
 import {useWindowSize} from "@vueuse/core";
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
@@ -9,7 +10,7 @@ import ScanAlertsTable from "@/Components/Tables/ScanAlertsTable.vue";
 import ScanAlertsTableModal from "@/Components/Modals/ScanAlertsTableModal.vue";
 
 import {RiExpandDiagonalLine} from "vue-remix-icons";
-import {ref} from "vue";
+import CandlestickChartWrapper from "@/Components/CandlestickChart/CandlestickChartWrapper.vue";
 
 const {height} = useWindowSize();
 
@@ -18,6 +19,24 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+});
+
+const alerts = computed(() => {
+    return props.scan.alerts.map(alert => {
+        return {
+            ...alert,
+            timestamp: dayjs.utc(alert.timestamp).tz(dayjs.tz.guess()).format('MM-DD-YYYY HH:mm:ss'),
+        };
+    });
+});
+
+const markers = computed(() => {
+    return {
+        time: alerts.value[0].timestamp,
+        position: 'aboveBar',
+        color: '#22c55e',
+        shape: 'circle',
+    };
 });
 
 const showScanTableModal = ref(false);
@@ -75,20 +94,22 @@ const showScanTableModal = ref(false);
                         </div>
                         <div
                             :style="`height: ${height - 192}px`" class="h-full overflow-y-auto">
-                            <ScanAlertsTable :alerts="props.scan.alerts"
+                            <ScanAlertsTable :alerts="alerts"
                                              :columns="['time', 'price', 'volume', 'change_percent']"
                                              class="items-stretch"/>
                         </div>
                     </Tab>
                 </TabContainer>
             </Card>
-            <Card class="col-span-8 h-full" title="Chart">
-                <div class="w-full"></div>
-
-            </Card>
+            <div class="col-span-8">
+                <Card class="aspect-video">
+                    <CandlestickChartWrapper :date="props.scan.date" :markers="[markers]"
+                                             :symbol="props.scan.symbol"/>
+                </Card>
+            </div>
         </div>
 
-        <ScanAlertsTableModal :alerts="props.scan.alerts" :show="showScanTableModal"
+        <ScanAlertsTableModal :alerts="alerts" :show="showScanTableModal"
                               v-on:close="showScanTableModal = false"/>
     </AuthenticatedLayout>
 </template>

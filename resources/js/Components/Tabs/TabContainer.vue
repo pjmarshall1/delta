@@ -1,9 +1,23 @@
 <script setup>
-import {nextTick, onMounted, provide, reactive, ref, watch} from 'vue';
+import {provide, reactive, ref} from 'vue';
+import {useResizeObserver} from "@vueuse/core";
+
+const props = defineProps({
+    activeTab: {
+        type: Number,
+        default: 0,
+    }
+});
 
 const tabs = reactive([]);
-const activeTab = ref(0);
-const indicatorStyle = ref({});
+const activeTab = ref(props.activeTab);
+
+const container = ref();
+const tabWidth = ref(0);
+useResizeObserver(container, (entries) => {
+    const {width, height} = entries[0].contentRect;
+    tabWidth.value = width / tabs.length;
+});
 
 const registerTab = (name) => {
     tabs.push({name});
@@ -12,34 +26,13 @@ const registerTab = (name) => {
 
 const getActiveTabIndex = () => activeTab.value;
 
-const updateIndicator = async () => {
-    await nextTick();
-
-    const tabElements = document.querySelectorAll('.tab-header');
-    if (tabElements.length > 0 && activeTab.value < tabElements.length) {
-        const activeElement = tabElements[activeTab.value];
-        indicatorStyle.value = {
-            width: `${activeElement.offsetWidth}px`,
-            transform: `translateX(${activeElement.offsetLeft}px)`,
-        };
-    }
-};
-
 provide('registerTab', registerTab);
 provide('getActiveTabIndex', getActiveTabIndex);
 
-onMounted(() => {
-    updateIndicator();
-});
-
-watch(activeTab, () => {
-    updateIndicator();
-});
 </script>
 
 <template>
-    <div class="relative">
-        <!-- Tab Headers -->
+    <div ref="container" class="relative">
         <div class="relative h-12 flex items-center border-b ">
             <button
                 v-for="(tab, index) in tabs"
@@ -51,14 +44,12 @@ watch(activeTab, () => {
                 {{ tab.name }}
             </button>
 
-            <!-- Moving Bottom Border -->
             <div
-                :style="indicatorStyle"
+                :style="`width: ${tabWidth}px; left: ${activeTab * tabWidth}px`"
                 class="absolute -bottom-px -mt-1 h-0.5 bg-indigo-500 transition-all duration-300"
             ></div>
         </div>
 
-        <!-- Tab Content -->
         <slot/>
     </div>
 </template>

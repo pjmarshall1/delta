@@ -6,14 +6,14 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 it('requires authentication', function () {
-    get(route('aggregate'))->assertRedirectToRoute('login');
+    get(route('aggregates'))->assertRedirectToRoute('login');
 });
 
 it('returns aggregate data from the provider', function () {
     $this->withoutExceptionHandling();
 
     actingAs(User::factory()->create())
-        ->get(route('aggregate', [
+        ->get(route('aggregates', [
             'symbol' => 'AAPL',
             'multiplier' => 5,
             'timespan' => 'minute',

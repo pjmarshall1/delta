@@ -88,13 +88,13 @@ const props = defineProps({
                             <td v-if="props.columns.includes('date')" class="px-3 py-3">
                                 <span
                                     class="block w-full text-center text-xs font-medium text-gray-500">
-                                    {{ dayjs.utc(alert.timestamp).tz(dayjs.tz.guess()).format('MM-DD-YYYY')
+                                    {{ dayjs(alert.timestamp).format('MM-DD-YYYY')
                                     }}</span>
                             </td>
                             <td v-if="props.columns.includes('time')" class="px-3 py-3">
                                 <span
                                     class="block w-full text-center text-xs font-medium text-gray-500">
-                                    {{ dayjs.utc(alert.timestamp).tz(dayjs.tz.guess()).format('HH:mm:ss')
+                                    {{ dayjs(alert.timestamp).format('HH:mm:ss')
                                     }}</span>
                             </td>
                             <td v-if="props.columns.includes('symbol')" class="px-3 py-3">

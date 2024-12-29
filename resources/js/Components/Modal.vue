@@ -99,10 +99,10 @@ const maxWidthClass = computed(() => {
                 <div v-show="show" class="h-full w-full flex items-center justify-center">
                     <div
                         :class="maxWidthClass"
-                        class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">
+                        class="p-1 bg-white rounded-lg shadow-xl transform transition-all sm:w-full sm:mx-auto">
 
                         <div v-if="props.title || props.closeable"
-                             class="p-5 bg-white w-full flex flex-none items-center justify-between">
+                             class="p-4 bg-white w-full flex flex-none items-center justify-between">
 
                             <span v-if="props.title" class="font-medium text-xl text-gray-900">{{ props.title }}</span>
 

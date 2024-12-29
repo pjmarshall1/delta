@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/scans/{scan}', [ScanController::class, 'show'])->name('scans.show');
     Route::post('/scans/import', ScanImportController::class)->name('scans.import');
 
-    Route::get('/aggregate', AggregateController::class)->name('aggregate');
+    Route::get('/aggregates', AggregateController::class)->name('aggregates');
 });
 
 // Profile Routes

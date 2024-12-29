@@ -27,6 +27,7 @@ class ScanFactory extends Factory
             'p_count' => $this->faker->numberBetween(1, 999),
             'm_count' => $this->faker->numberBetween(1, 999),
             'a_count' => $this->faker->numberBetween(1, 999),
+            'reviewed' => $this->faker->boolean(),
         ];
     }
 }

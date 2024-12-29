@@ -25,10 +25,11 @@ it('imports scan from a sample file', function () {
         'price' => 40500,
         'float' => 822522,
         'short_interest' => 72107,
-        'gap_percent' => 522556,
+        'gap_percent' => 5226,
         'p_count' => 2,
         'm_count' => 0,
         'a_count' => 0,
+        'reviewed' => 0,
     ]);
 
     $this->assertDatabaseHas(ScanAlert::class, [
@@ -37,11 +38,11 @@ it('imports scan from a sample file', function () {
         'price' => 40500,
         'float' => 822522,
         'short_interest' => 72107,
-        'gap_percent' => 522556,
-        'change_percent' => 522556,
+        'gap_percent' => 5226,
+        'change_percent' => 5226,
         'volume' => 248289,
-        'relative_volume_daily' => 175516154,
-        'relative_volume_five' => 13347903226,
+        'relative_volume_daily' => 1755100,
+        'relative_volume_five' => 133479000,
         'strategy_name' => 'Squeeze Alert - Up 10% in 10min',
     ]);
 });

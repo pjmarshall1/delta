@@ -1,13 +1,14 @@
 <script setup>
 import {computed, ref} from "vue";
 import {useWindowSize} from "@vueuse/core";
-import {router} from "@inertiajs/vue3"
+import {router, useForm} from "@inertiajs/vue3"
 
-import {RiArrowLeftSLine, RiArrowRightSLine, RiExpandDiagonalLine} from "vue-remix-icons";
+import {RiArrowLeftSLine, RiArrowRightSLine, RiCheckboxCircleFill, RiExpandDiagonalLine} from "vue-remix-icons";
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import CandlestickChartWrapper from "@/Components/CandlestickChart/CandlestickChartWrapper.vue";
 import Card from "@/Components/Card.vue";
+import Separator from "@/Components/Separator.vue";
 import Tab from "@/Components/Tabs/Tab.vue";
 import TabContainer from "@/Components/Tabs/TabContainer.vue";
 import ScanAlertsTable from "@/Components/Tables/ScanAlertsTable.vue";
@@ -46,6 +47,16 @@ const markers = computed(() => {
 
 const showScanTableModal = ref(false);
 
+const updateForm = useForm({
+    reviewed: props.scan.reviewed,
+});
+
+const handleToggleReviewed = () => {
+    updateForm.reviewed = !updateForm.reviewed;
+
+    updateForm.post(route('scans.update', props.scan.id));
+};
+
 </script>
 
 <template>
@@ -53,14 +64,25 @@ const showScanTableModal = ref(false);
         :title="`${scan.symbol} - ${  dayjs(scan.date).format('ddd, MMM DD, YYYY')}`">
 
         <template #header>
-            <div class="flex items-center space-x-2">
+            <div class="h-6 flex items-center space-x-2">
+                <button class="flex items-center px-2 py-1 rounded-full text-gray-600 hover:bg-gray-200"
+                        @click="handleToggleReviewed">
+                    <RiCheckboxCircleFill :class="props.scan.reviewed ? 'text-green-500' : 'text-gray-400'"
+                                          class="w-5 h-5"/>
+                    <span class="block px-1 text-sm text-gray-500">{{
+                            props.scan.reviewed ? 'Scan reviewed' : 'Mark as reviewed'
+                        }}</span>
+                </button>
+
+                <Separator/>
+
                 <button :disabled="! meta.previousUrl"
-                        class="p-1 rounded-full text-gray-600 hover:bg-gray-300 disabled:hover:bg-transparent"
+                        class="p-1 rounded-full text-gray-600 hover:bg-gray-200 disabled:hover:bg-transparent disabled:text-gray-400"
                         @click="router.get(meta.previousUrl)">
                     <RiArrowLeftSLine class="mr-px w-5 h-5"/>
                 </button>
                 <button :disabled="!meta.nextUrl"
-                        class="p-1 rounded-full text-gray-600 hover:bg-gray-300 disabled:hover:bg-transparent"
+                        class="p-1 rounded-full text-gray-600 hover:bg-gray-200 disabled:hover:bg-transparent disabled:text-gray-400"
                         @click="router.get(meta.nextUrl)">
                     <RiArrowRightSLine class="ml-px w-5 h-5"/>
                 </button>

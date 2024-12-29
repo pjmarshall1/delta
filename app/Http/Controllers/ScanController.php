@@ -26,4 +26,11 @@ class ScanController extends Controller
             'scan' => ScanResource::make($scan->load('alerts')),
         ]);
     }
+
+    public function update(Scan $scan)
+    {
+        $scan->update(request()->validate(['reviewed' => 'required|boolean']));
+
+        return back();
+    }
 }

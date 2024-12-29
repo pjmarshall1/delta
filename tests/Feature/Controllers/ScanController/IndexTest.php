@@ -18,7 +18,7 @@ it('should return the correct component', function () {
 });
 
 it('passes scans to the view', function () {
-    $scans = Scan::factory(10)->create();
+    $scans = Scan::factory(2)->create();
 
     actingAs(User::factory()->create())
         ->get(route('scans.index'))

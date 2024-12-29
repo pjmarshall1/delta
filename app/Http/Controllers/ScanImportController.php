@@ -52,14 +52,10 @@ class ScanImportController extends Controller
                 ]);
             })
             ->groupBy('symbol')
-            ->each(function ($alerts) use ($date) {
+            ->each(function ($alerts) {
                 $scan = Arr::only($alerts->first(), [
-                    'symbol', 'price', 'relative_volume', 'gap_percent', 'float', 'short_interest',
+                    'timestamp', 'symbol', 'price', 'relative_volume', 'gap_percent', 'float', 'short_interest',
                 ]);
-
-                $scan['timestamp'] = Date::parse($date)
-                    ->shiftTimezone('America/New_York')
-                    ->utc()->toDateTimeString();
 
                 $marketOpen = Date::parse($scan['timestamp'])
                     ->setTime(9, 30, 00)

@@ -11,6 +11,13 @@ class Scan extends Model
 {
     use HasFactory;
 
+    public function casts(): array
+    {
+        return [
+            'reviewed' => 'boolean',
+        ];
+    }
+
     public function alerts(): HasMany
     {
         return $this->hasMany(ScanAlert::class);

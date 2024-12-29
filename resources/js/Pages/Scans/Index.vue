@@ -1,14 +1,14 @@
 <script setup>
 import {useWindowSize} from "@vueuse/core";
 import {router} from "@inertiajs/vue3";
+import {ref} from "vue";
+
+import {RiAddLine, RiCheckboxCircleFill} from "vue-remix-icons";
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Card from "@/Components/Card.vue";
-import Pagination from "@/Components/Pagination.vue";
-
-import {RiAddLine} from "vue-remix-icons";
-import {ref} from "vue";
 import ImportScansModal from "@/Components/Modals/ImportScansModal.vue";
+import Pagination from "@/Components/Pagination.vue";
 
 const {height} = useWindowSize();
 
@@ -74,6 +74,10 @@ const handleScanSelected = (scan) => {
                                         scope="col">
                                         Alerts
                                     </th>
+                                    <th class="sticky top-0 px-3 py-5 bg-gray-200 text-center text-xs font-semibold uppercase tracking-wide text-gray-500"
+                                        scope="col">
+                                        Reviewed
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
@@ -125,6 +129,14 @@ const handleScanSelected = (scan) => {
                                             <span>&nbsp;&middot;&nbsp;</span>
                                             <span class="text-red-500 font-bold">{{ scan.a_count }}</span>
                                         </span>
+                                    </td>
+                                    <td class="h-12"
+                                        @click="$emit('onScanSelected', scan)">
+                                        <div class="h-full w-full flex items-center justify-center">
+                                            <RiCheckboxCircleFill
+                                                :class="scan.reviewed ? 'text-green-500' : 'text-gray-400'"
+                                                class="w-5 h-5"/>
+                                        </div>
                                     </td>
                                 </tr>
                                 </tbody>

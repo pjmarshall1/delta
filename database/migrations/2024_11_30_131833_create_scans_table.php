@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('p_count')->default(0);
             $table->integer('m_count')->default(0);
             $table->integer('a_count')->default(0);
+            $table->boolean('reviewed')->default(false);
             $table->timestamps();
         });
     }

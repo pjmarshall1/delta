@@ -24,6 +24,7 @@ class ScanResource extends JsonResource
             'm_count' => $this->m_count,
             'a_count' => $this->a_count,
             'alerts' => ScanAlertResource::collection($this->whenLoaded('alerts')),
+            'path' => $this->path,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

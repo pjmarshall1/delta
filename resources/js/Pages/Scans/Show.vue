@@ -1,20 +1,25 @@
 <script setup>
 import {computed, ref} from "vue";
 import {useWindowSize} from "@vueuse/core";
+import {router} from "@inertiajs/vue3"
+
+import {RiArrowLeftSLine, RiArrowRightSLine, RiExpandDiagonalLine} from "vue-remix-icons";
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import CandlestickChartWrapper from "@/Components/CandlestickChart/CandlestickChartWrapper.vue";
 import Card from "@/Components/Card.vue";
 import Tab from "@/Components/Tabs/Tab.vue";
 import TabContainer from "@/Components/Tabs/TabContainer.vue";
 import ScanAlertsTable from "@/Components/Tables/ScanAlertsTable.vue";
 import ScanAlertsTableModal from "@/Components/Modals/ScanAlertsTableModal.vue";
 
-import {RiExpandDiagonalLine} from "vue-remix-icons";
-import CandlestickChartWrapper from "@/Components/CandlestickChart/CandlestickChartWrapper.vue";
-
 const {height} = useWindowSize();
 
 const props = defineProps({
+    meta: {
+        type: Object,
+        required: true,
+    },
     scan: {
         type: Object,
         required: true,
@@ -46,6 +51,21 @@ const showScanTableModal = ref(false);
 <template>
     <AuthenticatedLayout
         :title="`${scan.symbol} - ${  dayjs(scan.date).format('ddd, MMM DD, YYYY')}`">
+
+        <template #header>
+            <div class="flex items-center space-x-2">
+                <button :disabled="! meta.previousUrl"
+                        class="p-1 rounded-full text-gray-600 hover:bg-gray-300 disabled:hover:bg-transparent"
+                        @click="router.get(meta.previousUrl)">
+                    <RiArrowLeftSLine class="mr-px w-5 h-5"/>
+                </button>
+                <button :disabled="!meta.nextUrl"
+                        class="p-1 rounded-full text-gray-600 hover:bg-gray-300 disabled:hover:bg-transparent"
+                        @click="router.get(meta.nextUrl)">
+                    <RiArrowRightSLine class="ml-px w-5 h-5"/>
+                </button>
+            </div>
+        </template>
 
         <div class="grid grid-cols-12 gap-5">
             <Card :style="`height: ${height - 104}px`" c class="col-span-4 overflow-hidden">

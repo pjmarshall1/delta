@@ -16,7 +16,13 @@ class ScanController extends Controller
 
     public function show(Scan $scan)
     {
+        $meta = [
+            'previousUrl' => Scan::where('timestamp', '>', $scan->timestamp)->orderBy('timestamp', 'asc')->first()?->path,
+            'nextUrl' => Scan::where('timestamp', '<', $scan->timestamp)->orderBy('timestamp', 'desc')->first()?->path,
+        ];
+
         return inertia('Scans/Show', [
+            'meta' => $meta,
             'scan' => ScanResource::make($scan->load('alerts')),
         ]);
     }

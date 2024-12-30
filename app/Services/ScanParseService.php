@@ -4,15 +4,20 @@ namespace App\Services;
 
 use Exception;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 
 class ScanParseService
 {
+    private $date;
+
     /**
      * @throws Exception
      */
-    public function parseFile(string $filePath): Collection
+    public function parseFile(string $filePath, string $date): Collection
     {
+        $this->date = $date;
+
         if (! is_readable($filePath)) {
             throw new Exception('File not found or not readable');
         }
@@ -45,26 +50,34 @@ class ScanParseService
 
         fclose($file);
 
+        if (empty($rows)) {
+            throw new Exception('No alerts were found.');
+        }
+
         return $this->extractData($rows);
     }
 
     public function extractData($rows): Collection
     {
         return collect($rows)->map(function ($row) {
-
             $symbol = Str::of($row['Symbol / News'])->after('https://www.warriortrading.com/quote/')->before('/');
 
+            $timestamp = Date::parse($this->date)
+                ->setTimeFromTimeString($row['Time'])
+                ->shiftTimezone('America/New_York')
+                ->utc()->toDateTimeString();
+
             return [
-                'time' => $row['Time'],
+                'timestamp' => $timestamp,
                 'symbol' => $symbol->toString(),
-                'price' => (float) $row['Price'],
-                'volume' => (int) $row['Volume'],
-                'float' => (int) $row['Float'],
-                'relative_volume_daily' => (int) $row['Relative Volume(Daily Rate)'],
-                'relative_volume_five' => (int) $row['Relative Volume(5 min %)'],
-                'gap_percent' => (float) $row['Gap(%)'],
-                'change_percent' => (float) $row['Change From Close(%)'],
-                'short_interest' => (float) $row['Short Interest'],
+                'price' => $row['Price'] * 10000,
+                'volume' => $row['Volume'],
+                'float' => $row['Float'],
+                'relative_volume_daily' => (int) round((float) $row['Relative Volume(Daily Rate)'], 2) * 100,
+                'relative_volume_five' => (int) round((float) $row['Relative Volume(5 min %)'], 2) * 100,
+                'gap_percent' => (int) round($row['Gap(%)'] * 100),
+                'change_percent' => (int) round($row['Change From Close(%)'] * 100),
+                'short_interest' => $row['Short Interest'],
                 'strategy_name' => $row['Strategy Name'],
             ];
         });

@@ -62,7 +62,7 @@ const fetchAggregateData = async () => {
         startDate = startDate.add(1, 'day');
     }
 
-    axios.get(route('aggregates'), {
+    axios.get(route('ticker.aggregates'), {
         params: {
             symbol: props.symbol,
             multiplier: activeInterval.value.multiplier,

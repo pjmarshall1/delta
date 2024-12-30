@@ -6,6 +6,7 @@ use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Profile\ProfilePhotoController;
 use App\Http\Controllers\ScanController;
 use App\Http\Controllers\ScanImportController;
+use App\Http\Controllers\Tickers\DetailsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/scans/import', ScanImportController::class)->name('scans.import');
 
     Route::get('/aggregates', AggregateController::class)->name('aggregates');
+    Route::get('tickers/details', DetailsController::class)->name('tickers.details');
 });
 
 // Profile Routes

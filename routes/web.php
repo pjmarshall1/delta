@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\AggregateController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Profile\ProfilePhotoController;
 use App\Http\Controllers\ScanController;
 use App\Http\Controllers\ScanImportController;
-use App\Http\Controllers\Tickers\DetailsController;
+use App\Http\Controllers\Ticker\AggregateController;
+use App\Http\Controllers\Ticker\DetailsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,8 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/scans/{scan}/update', [ScanController::class, 'update'])->name('scans.update');
     Route::post('/scans/import', ScanImportController::class)->name('scans.import');
 
-    Route::get('/aggregates', AggregateController::class)->name('aggregates');
-    Route::get('tickers/details', DetailsController::class)->name('tickers.details');
+    Route::get('ticker/aggregates', AggregateController::class)->name('ticker.aggregates');
+    Route::get('ticker/details', DetailsController::class)->name('ticker.details');
 });
 
 // Profile Routes

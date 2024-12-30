@@ -9,10 +9,8 @@ it('requires authentication', function () {
 });
 
 it('fetches quote data from the provider', function () {
-    $this->withoutExceptionHandling();
-
     $response = $this->actingAs(User::factory()->create())
-        ->get(route('tickers.details', [
+        ->get(route('ticker.details', [
             'symbol' => 'AAPL',
             'date' => '2024-11-07',
         ]))->assertStatus(200);

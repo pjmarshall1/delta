@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Ticker;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AggregateRequest;
 use App\Services\MarketData\MarketDataService;
 use Exception;

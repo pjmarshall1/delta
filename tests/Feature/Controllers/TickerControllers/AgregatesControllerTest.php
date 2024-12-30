@@ -12,12 +12,21 @@ it('requires authentication', function () {
 it('returns aggregate data from the provider', function () {
     $this->withoutExceptionHandling();
 
-    actingAs(User::factory()->create())
-        ->get(route('aggregates', [
+    $response = actingAs(User::factory()->create())
+        ->get(route('ticker.aggregates', [
             'symbol' => 'AAPL',
             'multiplier' => 5,
             'timespan' => 'minute',
             'startDate' => '2024-04-01',
             'endDate' => '2024-04-01',
         ]))->assertStatus(200);
+
+    $response->assertJsonStructure([[
+        'time',
+        'open',
+        'high',
+        'low',
+        'close',
+        'volume',
+    ]]);
 });

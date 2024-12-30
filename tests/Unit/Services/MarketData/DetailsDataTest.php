@@ -3,12 +3,15 @@
 use App\Services\MarketData\Helpers\DataValidator;
 use App\Services\MarketData\MarketDataService;
 
-it('fetches quote data from the provider', function ($provider) {
-    Config::set('default', $provider);
+it('fetches quote data from the provider', function ($providerName) {
+    // Set up dependencies
+    $validator = new DataValidator;
 
-    $apiKey = config("market.providers.{$provider}.api_key");
+    // Set up the API key
+    $apiKey = config("market.providers.{$providerName}.api_key");
 
-    $provider = new MarketDataService(new DataValidator, $provider, $apiKey);
+    // Create the MarketDataService instance
+    $provider = new MarketDataService($validator, $providerName, $apiKey);
 
     $response = $provider->getDetailsData('AAPL', '2024-11-07');
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Tickers;
+namespace App\Http\Controllers\Ticker;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\QuoteRequest;

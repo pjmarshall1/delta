@@ -49,7 +49,7 @@ const handleFileUploaderStatusUpdated = (status) => {
                                   :namePattern="/^\d{8}_Momo\.csv$/"
                                   :uploadUrl="route('scans.import')"
                                   class="h-16 w-full bg-gray-200 border border-gray-300 rounded-lg"
-                                  v-on:statusUpdated="handleFileUploaderStatusUpdated"
+                                  @onStatusUpdated="handleFileUploaderStatusUpdated"
                     />
                 </div>
             </div>

@@ -1,6 +1,6 @@
 <script setup>
 
-import {defineExpose, onMounted, onUnmounted, reactive, ref, watch} from "vue";
+import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import {useForm, usePage} from "@inertiajs/vue3";
 
 const emit = defineEmits(['onStatusUpdated']);
@@ -28,7 +28,6 @@ const props = defineProps({
 });
 
 const state = reactive({
-    progress: 0,
     status: '',
     statusMessage: '',
     error: '',
@@ -73,24 +72,17 @@ const upload = () => {
         uploadForm.post(props.uploadUrl, {
             onProgress: (event) => {
                 state.status = 'uploading';
-                state.progress = Math.round((event.loaded / event.total) * 100);
-                state.statusMessage = state.progress + '%';
+                state.statusMessage = Math.round((event.loaded / event.total) * 100) + '%';
             },
             onError: (e) => {
                 if (e.file) {
-                    console.log(e.file)
                     state.status = 'error';
                     state.errror = 'e.file';
                 }
             },
-            onSuccess: () => {
-                state.progress = 0;
-            },
         });
     }
 }
-
-defineExpose({upload,});
 
 watch(() => uploadForm.file, (newFile) => {
     if (newFile) {
@@ -114,22 +106,22 @@ watch(() => uploadForm.file, (newFile) => {
 
 onMounted(() => {
     const page = usePage();
+
     Echo.private('user.' + page.props.auth.user.id)
         .listen('UpdateStatus', (e) => {
             state.status = e.status;
             state.statusMessage = e.message;
+
             emit('onStatusUpdated', e.status);
         })
-        .listen('UpdateProgress', (e) => {
-            state.progress = e.progress;
-            state.statusMessage = e.progress + '%';
-        });
 });
 
 onUnmounted(() => {
     const page = usePage();
     Echo.leave('user.' + page.props.auth.user.id);
 });
+
+defineExpose({upload});
 
 </script>
 

@@ -120,7 +120,7 @@ const handleScanSelected = (scan) => {
                                             {{ numeral(scan.short_interest).format('0,0[.][00]a') }}
                                         </span>
                                     </td>
-                                    <td class="h-12" @click="$emit('onScanSelected', scan)">
+                                    <td class="h-12" @click="handleScanSelected(scan)">
                                         <span
                                             class="block w-full text-center text-xs font-medium uppercase tracking-wide text-gray-500">
                                             <span class="text-blue-500 font-bold">{{ scan.p_count }}</span>
@@ -130,8 +130,7 @@ const handleScanSelected = (scan) => {
                                             <span class="text-red-500 font-bold">{{ scan.a_count }}</span>
                                         </span>
                                     </td>
-                                    <td class="h-12"
-                                        @click="$emit('onScanSelected', scan)">
+                                    <td class="h-12" @click="handleScanSelected(scan)">
                                         <div class="h-full w-full flex items-center justify-center">
                                             <RiCheckboxCircleFill
                                                 :class="scan.reviewed ? 'text-green-500' : 'text-gray-400'"

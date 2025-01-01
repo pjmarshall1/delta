@@ -33,33 +33,14 @@ class Details implements DetailsInterface
 
         return [
             'status' => 'success',
-            'results' => [
-                ...$response['results'],
-                'name' => $this->cleanStockName($response['results']['name']),
-            ],
+            'results' => $response['results'],
         ];
-    }
-
-    private function cleanStockName($name): string
-    {
-        $unwantedTerms = [
-            'Common Stock', 'Common Stocks', 'Common Shares', 'Ordinary Shares', 'Inc.', 'Corp.', 'Ltd.', 'LLC', 'Corporation', 'PLC',
-            'Holdings', 'Holding', 'Group', 'Company', 'Co.', 'S.A.', 'S.A.S.', 'Limited Ordinary Share', 'Limited Ordinary Shares',
-        ];
-
-        foreach ($unwantedTerms as $term) {
-            $name = preg_replace('/\b'.preg_quote($term, '/').'\b/i', '', $name);
-        }
-
-        return trim(preg_replace('/\s+/', ' ', $name));
     }
 
     public function normalize(array $data): array
     {
-        $previousDay = $data['previous_day'] ?? null;
-
         return [
-            'name' => $this->cleanStockName($data['name']),
+            'name' => $data['name'] ?? null,
             'exchange' => $this->getExchangeName($data['primary_exchange']) ?? null,
             'market_cap' => $data['market_cap'] ?? null,
             'list_date' => $data['list_date'] ?? null,

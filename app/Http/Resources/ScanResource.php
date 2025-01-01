@@ -28,6 +28,11 @@ class ScanResource extends JsonResource
             'alerts' => ScanAlertResource::collection($this->whenLoaded('alerts')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'name' => $this->name,
+            'exchange' => $this->exchange,
+            'market_cap' => $this->market_cap,
+            'list_date' => $this->list_date,
+
         ];
     }
 }

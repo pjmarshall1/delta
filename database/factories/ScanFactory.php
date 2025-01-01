@@ -28,6 +28,10 @@ class ScanFactory extends Factory
             'm_count' => $this->faker->numberBetween(1, 999),
             'a_count' => $this->faker->numberBetween(1, 999),
             'reviewed' => $this->faker->boolean(),
+            'name' => $this->faker->name(),
+            'exchange' => $this->faker->word(),
+            'market_cap' => $this->faker->randomNumber(),
+            'list_date' => $this->faker->date(),
         ];
     }
 }

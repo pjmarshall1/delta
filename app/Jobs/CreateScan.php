@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Scan;
+use App\Services\MarketData\MarketDataService;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -22,7 +23,7 @@ class CreateScan implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle(MarketDataService $provider): void
     {
         $scan = Arr::only($this->alerts->first(), ['timestamp', 'symbol', 'float', 'short_interest', 'price', 'gap_percent']);
 
@@ -34,6 +35,8 @@ class CreateScan implements ShouldQueue
         $scan['p_count'] = $this->alerts->where('timestamp', '<', $marketOpen)->count();
         $scan['m_count'] = $this->alerts->whereBetween('timestamp', [$marketOpen, $marketClose])->count();
         $scan['a_count'] = $this->alerts->where('timestamp', '>', $marketClose)->count();
+
+        $scan = array_merge($scan, $provider->getDetailsData($scan['symbol'], Date::parse($scan['timestamp'])->toDateSTring()));
 
         if ($scan = Scan::updateOrCreate($scan)) {
             $scan->alerts()->upsert($this->alerts->toArray(), ['symbol', 'timestamp']);

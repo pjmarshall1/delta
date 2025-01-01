@@ -93,17 +93,26 @@ const handleToggleReviewed = () => {
             <Card :style="`height: ${height - 104}px`" c class="col-span-4 overflow-hidden">
                 <TabContainer>
                     <Tab name="Details">
+                        <div class="p-3 text-sm font-semibold">
+                            {{ scan.name }}
+                        </div>
                         <dl class="px-2">
                             <div class="p-3 flex items-center justify-between">
-                                <dt class="text-sm font-semibold tracking-wide text-gray-500">Price</dt>
+                                <dt class="text-sm font-semibold tracking-wide text-gray-500">Exchange</dt>
                                 <dd class="text-sm font-medium tracking-wide text-gray-700">
-                                    {{ numeral(scan.price / 10000).format('$0,0[.][0000]') }}
+                                    {{ scan.exchange }}
                                 </dd>
                             </div>
                             <div class="p-3 flex items-center justify-between">
-                                <dt class="text-sm font-semibold tracking-wide text-gray-500">float</dt>
+                                <dt class="text-sm font-semibold tracking-wide text-gray-500">List Date</dt>
                                 <dd class="text-sm font-medium tracking-wide text-gray-700">
-                                    {{ numeral(scan.gap_percent / 10000).format('0[.][00]%') }}
+                                    {{ dayjs(scan.list_date).format('MMM DD, YYYY') }}
+                                </dd>
+                            </div>
+                            <div class="p-3 flex items-center justify-between">
+                                <dt class="text-sm font-semibold tracking-wide text-gray-500">Market Cap</dt>
+                                <dd class="text-sm font-medium tracking-wide text-gray-700">
+                                    {{ numeral(scan.market_cap).format('0,0[.][00]a') }}
                                 </dd>
                             </div>
                             <div class="p-3 flex items-center justify-between">
@@ -116,6 +125,20 @@ const handleToggleReviewed = () => {
                                 <dt class="text-sm font-semibold tracking-wide text-gray-500">Short Interest</dt>
                                 <dd class="text-sm font-medium tracking-wide text-gray-700">
                                     {{ numeral(scan.short_interest).format('0,0[.][00]a') }}
+                                </dd>
+                            </div>
+                            <Separator orientation="horizontal"/>
+                            <div class="p-3 flex items-center justify-between">
+                                <dt class="text-sm font-semibold tracking-wide text-gray-500">Price</dt>
+                                <dd class="text-sm font-medium tracking-wide text-gray-700">
+                                    {{ numeral(scan.price / 10000).format('$0,0[.][0000]') }}
+                                </dd>
+                            </div>
+                            <div class="p-3 flex items-center justify-between">
+                                <dt class="text-sm font-semibold tracking-wide text-gray-500">Gap</dt>
+                                <dd :class="scan.gap_percent > 0 ? 'text-green-500' : 'text-red-500'"
+                                    class="text-sm font-medium tracking-wide text-gray-700">
+                                    {{ numeral(scan.gap_percent / 10000).format('0[.][00]%') }}
                                 </dd>
                             </div>
                         </dl>

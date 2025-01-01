@@ -23,6 +23,10 @@ return new class extends Migration
             $table->integer('m_count')->default(0);
             $table->integer('a_count')->default(0);
             $table->boolean('reviewed')->default(false);
+            $table->string('name')->nullable();
+            $table->string('exchange')->nullable();
+            $table->bigInteger('market_cap')->nullable();
+            $table->dateTime('list_date')->nullable();
             $table->timestamps();
         });
     }

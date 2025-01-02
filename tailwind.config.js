@@ -18,6 +18,9 @@ export default {
             spacing: {
                 '18': '4.5rem',
             },
+            fontSize: {
+                'smaller': ['0.8125rem', {lineHeight: '1.125rem'}],
+            }
         },
     },
 

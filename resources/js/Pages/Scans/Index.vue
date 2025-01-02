@@ -9,6 +9,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Card from "@/Components/Card.vue";
 import ImportScansModal from "@/Components/Modals/ImportScansModal.vue";
 import Pagination from "@/Components/Pagination.vue";
+import DataTable from "@/Components/DataTable.vue";
 
 const {height} = useWindowSize();
 
@@ -19,11 +20,27 @@ const props = defineProps({
     }
 });
 
+const selectedScans = ref([]);
 const showImportModal = ref(false);
 
-const handleScanSelected = (scan) => {
-    router.get(route('scans.show', {scan: scan.id}));
+const handleScanSelected = (scanId) => {
+    router.get(route('scans.show', {scan: scanId}));
 }
+
+const handleSortChanged = (sort) => {
+    console.log(sort);
+}
+
+const columns = [
+    {label: 'Date', field: 'date', type: 'date'},
+    {label: 'Symbol', field: 'symbol', strong: true},
+    {label: 'Price', field: 'price', type: 'currency'},
+    {label: 'Gap %', field: 'gap_percent', type: 'percent', sentiment: true},
+    {label: 'Float', field: 'float', type: 'scaledNumber'},
+    {label: 'Short Int.', field: 'short_interest', type: 'scaledNumber'},
+    {label: 'Alerts', field: 'alerts_count'},
+    {label: 'Reviewed', field: 'reviewed'},
+];
 
 </script>
 
@@ -41,105 +58,30 @@ const handleScanSelected = (scan) => {
 
         <div :style="`height: ${height - 104}px`" class="w-full">
             <Card class="h-full flex flex-col">
-                <div class="w-full overflow-y-auto" style="scrollbar-gutter: unset">
-                    <div class="inline-block w-full align-middle">
-                        <div class="relative">
-                            <table class="w-full table-fixed">
-                                <thead>
-                                <tr>
-                                    <th class="sticky top-0 px-3 py-5 bg-gray-200 text-center text-xs font-semibold uppercase tracking-wide text-gray-500"
-                                        scope="col">Date
-                                    </th>
-                                    <th class="sticky top-0 px-3 py-5 bg-gray-200 text-center text-xs font-semibold uppercase tracking-wide text-gray-500"
-                                        scope="col">
-                                        Symbol
-                                    </th>
-                                    <th class="sticky top-0 px-3 py-5 bg-gray-200 text-center text-xs font-semibold uppercase tracking-wide text-gray-500"
-                                        scope="col">
-                                        Price
-                                    </th>
-                                    <th class="sticky top-0 px-3 py-5 bg-gray-200 text-center text-xs font-semibold uppercase tracking-wide text-gray-500"
-                                        scope="col">
-                                        Gap %
-                                    </th>
-                                    <th class="sticky top-0 px-3 py-5 bg-gray-200 text-center text-xs font-semibold uppercase tracking-wide text-gray-500"
-                                        scope="col">
-                                        Float
-                                    </th>
-                                    <th class="sticky top-0 px-3 py-5 bg-gray-200 text-center text-xs font-semibold uppercase tracking-wide text-gray-500"
-                                        scope="col">
-                                        Short Int.
-                                    </th>
-                                    <th class="sticky top-0 px-3 py-5 bg-gray-200 text-center text-xs font-semibold uppercase tracking-wide text-gray-500"
-                                        scope="col">
-                                        Alerts
-                                    </th>
-                                    <th class="sticky top-0 px-3 py-5 bg-gray-200 text-center text-xs font-semibold uppercase tracking-wide text-gray-500"
-                                        scope="col">
-                                        Reviewed
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-200 bg-white">
-                                <tr v-for="scan in props.scans.data" :key="scan.id"
-                                    class="hover:bg-gray-100 cursor-pointer">
-
-                                    <td class="h-12" @click="handleScanSelected(scan)">
-                                        <span
-                                            class="block w-full text-center text-xs font-medium uppercase tracking-wide text-gray-500">
-                                            {{ dayjs(scan.date).format('MM/DD/YYYY') }}
-                                        </span>
-                                    </td>
-                                    <td class="h-12" @click="handleScanSelected(scan)">
-                                        <span
-                                            class="block w-full text-center text-xs font-extrabold uppercase tracking-wide text-gray-500">
-                                            {{ scan.symbol }}
-                                        </span>
-                                    </td>
-                                    <td class="h-12" @click="handleScanSelected(scan)">
-                                        <span
-                                            class="block w-full text-center text-xs font-medium uppercase tracking-wide text-gray-500">
-                                            {{ numeral(scan.price / 10000).format('$0,0[.][0000]') }}
-                                        </span>
-                                    </td>
-                                    <td class="h-12" @click="handleScanSelected(scan)">
-                                        <span
-                                            class="block w-full text-center text-xs font-medium uppercase tracking-wide text-gray-500">
-                                            {{ numeral(scan.gap_percent / 10000).format('0[.][00]%') }}
-                                        </span>
-                                    </td>
-                                    <td class="h-12" @click="handleScanSelected(scan)">
-                                        <span
-                                            class="block w-full text-center text-xs font-medium tracking-wide text-gray-500">
-                                            {{ numeral(scan.float).format('0,0[.][00]a') }}
-                                        </span>
-                                    </td>
-                                    <td class="h-12" @click="handleScanSelected(scan)">
-                                        <span
-                                            class="block w-full text-center text-xs font-medium tracking-wide text-gray-500">
-                                            {{ numeral(scan.short_interest).format('0,0[.][00]a') }}
-                                        </span>
-                                    </td>
-                                    <td class="h-12" @click="handleScanSelected(scan)">
-                                        <span
-                                            class="block w-full text-center text-xs font-medium uppercase tracking-wide text-gray-500">
-                                            <span class="text-blue-500 font-bold">{{ scan.p_count }}</span>
-                                            <span>&nbsp;&middot;&nbsp;</span>
-                                            <span class="text-green-500 font-bold">{{ scan.m_count }}</span>
-                                            <span>&nbsp;&middot;&nbsp;</span>
-                                            <span class="text-red-500 font-bold">{{ scan.a_count }}</span>
-                                        </span>
-                                    </td>
-                                    <td class="h-12" @click="handleScanSelected(scan)">
-                                        <div class="h-full w-full flex items-center justify-center">
-                                            <RiCheckboxCircleFill
-                                                :class="scan.reviewed ? 'text-green-500' : 'text-gray-400'"
-                                                class="w-5 h-5"/>
+                <div class="w-full overflow-hidden">
+                    <div class="w-full h-full overflow-y-auto" style="scrollbar-gutter: unset">
+                        <div class="inline-block w-full align-middle">
+                            <div class="relative">
+                                <DataTable :columns="columns"
+                                           :rows="props.scans.data"
+                                           @rowSelected="handleScanSelected">
+                                    <template #alerts_count="{data}">
+                                        <div class="w-full flex items-center justify-center space-x-1">
+                                            <span class="text-blue-700 text-xs font-medium">{{ data.p_count }}</span>
+                                            <span class="-mt-0.5 text-xs text-gray-700">•</span>
+                                            <span class="text-green-700 text-xs font-medium">{{ data.m_count }}</span>
+                                            <span class="-mt-0.5 text-xs text-gray-700">•</span>
+                                            <span class="text-red-700 text-xs font-medium">{{ data.a_count }}</span>
                                         </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                    </template>
+                                    <template #reviewed="{data}">
+                                        <div class="w-full h-full flex items-center justify-center">
+                                            <RiCheckboxCircleFill
+                                                :class="[data ? 'text-green-600' : 'text-gray-500', 'size-5']"/>
+                                        </div>
+                                    </template>
+                                </DataTable>
+                            </div>
                         </div>
                     </div>
                 </div>

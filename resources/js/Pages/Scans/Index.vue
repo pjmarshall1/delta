@@ -1,7 +1,7 @@
 <script setup>
 import {useWindowSize} from "@vueuse/core";
 import {router} from "@inertiajs/vue3";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useScanColumns} from "@/Composables/useScanColumns.js";
 
 import {RiAddLine, RiCheckboxCircleFill, RiSettings4Line} from "vue-remix-icons";
@@ -21,6 +21,15 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+});
+
+const data = computed(() => {
+    return props.scans.data.map(scan => {
+        return {
+            ...scan,
+            date: dayjs.utc(scan.timestamp).tz(dayjs.tz.guess()).format('MM-DD-YYYY HH:mm:ss'),
+        };
+    });
 });
 
 const selectedScans = ref([]);
@@ -99,7 +108,7 @@ onMounted(() => {
                             <div class="relative">
                                 <DataTable v-if="visibleColumns?.length > 0"
                                            :columns="visibleColumns"
-                                           :rows="props.scans.data"
+                                           :rows="data"
                                            :sort="sort"
                                            :sortable="true"
                                            @rowSelected="handleScanSelected"

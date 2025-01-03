@@ -5,7 +5,6 @@ namespace App\Http\Resources;
 use App\Models\Scan;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Date;
 
 /** @mixin Scan */
 class ScanResource extends JsonResource
@@ -14,7 +13,7 @@ class ScanResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'date' => Date::parse($this->timestamp)->toDateString(),
+            'timestamp' => $this->timestamp,
             'symbol' => $this->symbol,
             'price' => $this->price,
             'gap_percent' => $this->gap_percent,

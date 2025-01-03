@@ -61,7 +61,7 @@ const handleToggleReviewed = () => {
 
 <template>
     <AuthenticatedLayout
-        :title="`${scan.symbol} - ${  dayjs(scan.date).format('ddd, MMM DD, YYYY')}`">
+        :title="`${scan.symbol} - ${dayjs.utc(scan.timestamp).tz(dayjs.tz.guess()).format('ddd, MMM DD, YYYY')}`">
 
         <template #header>
             <div class="h-6 flex items-center space-x-2">
@@ -168,8 +168,10 @@ const handleToggleReviewed = () => {
             </Card>
             <div class="col-span-8">
                 <Card class="aspect-video">
-                    <CandlestickChartWrapper :date="props.scan.date" :markers="[markers]"
-                                             :symbol="props.scan.symbol"/>
+                    <CandlestickChartWrapper
+                        :date="dayjs.utc(scan.timestamp).tz(dayjs.tz.guess()).format('YYYY-MM-DD')"
+                        :markers="[markers]"
+                        :symbol="props.scan.symbol"/>
                 </Card>
             </div>
         </div>

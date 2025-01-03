@@ -4,11 +4,10 @@ import {computed, onMounted, ref} from "vue";
 import {useResizeObserver} from "@vueuse/core";
 import {useScanColumns} from "@/Composables/useScanColumns.js";
 
-import {RiAddLine, RiCheckboxCircleFill, RiSettings4Line} from "vue-remix-icons";
+import {RiCheckboxCircleFill, RiSettings4Line} from "vue-remix-icons";
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Card from "@/Components/Card.vue";
-import ImportScansModal from "@/Components/Modals/ImportScansModal.vue";
 import Pagination from "@/Components/Pagination.vue";
 import DataTable from "@/Components/DataTable.vue";
 import ColumnsModal from "@/Components/Modals/ColumnsModal.vue";
@@ -39,7 +38,6 @@ const data = computed(() => {
 
 const selectedScans = ref([]);
 const showColumnsModal = ref(false);
-const showImportModal = ref(false);
 const sort = ref({
     field: '',
     direction: '',
@@ -89,13 +87,7 @@ onMounted(() => {
 <template>
     <AuthenticatedLayout title="Scan Log">
         <template v-slot:header>
-            <button
-                class="relative flex justify-between items-center space-x-1 px-4 py-2 bg-indigo-500 rounded-md uppercase font-semibold text-xs text-white shadow-sm hover:bg-indigo-600 disabled:bg-gray-100 transition ease-in-out duration-150 ring-1 ring-inset ring-indigo-600 focus:outline-none"
-                type="button"
-                @click="showImportModal=true">
-                <RiAddLine aria-hidden="true" class="-ml-1 h-5 w-5"/>
-                <span class="w-full pl-1 pr-2">Import Scans</span>
-            </button>
+
         </template>
 
 
@@ -145,10 +137,6 @@ onMounted(() => {
                       :show="showColumnsModal"
                       @onCancel="showColumnsModal = false"
                       @onUpdate="showColumnsModal = false"/>
-
-        <ImportScansModal :show="showImportModal"
-                          @onCancel="showImportModal = false"
-                          @onUpload="showImportModal = false"/>
 
     </AuthenticatedLayout>
 

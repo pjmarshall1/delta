@@ -63,7 +63,7 @@ const handleToggleReviewed = () => {
     <AuthenticatedLayout
         :title="`${scan.symbol} - ${dayjs.utc(scan.timestamp).tz(dayjs.tz.guess()).format('ddd, MMM DD, YYYY')}`">
 
-        <template #header>
+        <template #toolbar>
             <div class="h-6 flex items-center space-x-2">
                 <button class="flex items-center px-2 py-1 rounded-full text-gray-600 hover:bg-gray-200"
                         @click="handleToggleReviewed">

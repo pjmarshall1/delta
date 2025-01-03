@@ -1,15 +1,23 @@
 <script setup>
 import {Head, Link, router, usePage} from "@inertiajs/vue3";
-import {onMounted, onUnmounted} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 import {useLocalStorage, useWindowSize} from "@vueuse/core";
-
 import {useToast} from '@/Composables/useToast.js';
 
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import Dropdown from "@/Components/Dropdown.vue";
+import ImportScansModal from "@/Components/Modals/ImportScansModal.vue";
 import ToastContainer from "@/Components/ToastContainer.vue";
 
-import {RiArrowLeftSLine, RiDashboardLine, RiLogoutCircleLine, RiQrScan2Line, RiUser3Line} from "vue-remix-icons";
+import {
+    RiAddLine,
+    RiArrowLeftSLine,
+    RiDashboardLine,
+    RiLogoutCircleLine,
+    RiQrScan2Line,
+    RiUser3Line
+} from "vue-remix-icons";
+import Separator from "@/Components/Separator.vue";
 
 const sidebarOpen = useLocalStorage('sidebarOpen', true);
 const {toast} = useToast();
@@ -19,6 +27,8 @@ const {height} = useWindowSize();
 const props = defineProps({
     title: String,
 });
+
+const showImportScanModal = ref(false);
 
 const navigation = [
     {
@@ -71,26 +81,35 @@ onUnmounted(() => {
                                   class="h-5 w-5 stroke-3 duration-500"/>
             </button>
 
-            <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 duration-500">
+            <div class="flex flex-grow flex-col gap-y-5 overflow-y-auto bg-gray-900 duration-500">
                 <div class="h-16 w-full flex shrink-0 items-center justify-center">
                     <ApplicationLogo/>
                 </div>
 
                 <nav class="flex flex-1 flex-col overflow-hidden">
-                    <ul class="flex flex-1 flex-col gap-y-2.5" role="list">
+                    <ul class="px-4 flex flex-1 flex-col gap-y-2.5" role="list">
                         <li>
-                            <ul class="px-4 space-y-1" role="list">
-                                <li v-for="item in navigation" :key="item.name">
-                                    <Link
-                                        :class="[item.current ? 'bg-indigo-800 text-white' : 'text-gray-400 hover:bg-indigo-400/25 hover:text-white']"
-                                        :href="item.href"
-                                        class="group flex items-center gap-x-3 rounded-md p-2 text-sm/6 font-semibold">
-                                        <component :is="item.icon" aria-hidden="true" class="size-6 shrink-0"/>
-                                        <span :class="sidebarOpen ? 'opacity-100' : 'opacity-0'"
-                                              class="transition-opacity duration-500">{{ item.name }}</span>
-                                    </Link>
-                                </li>
-                            </ul>
+                            <button
+                                class="h-10 w-full p-2 flex items-center space-x-3 rounded-md text-gray-400 hover:text-white text-sm font-semibold  hover:bg-indigo-400/25"
+                                type="button"
+                                @click="showImportScanModal=true">
+                                <RiAddLine aria-hidden="true" class="flex-shrink-0 size-6"/>
+
+                                <span :class="sidebarOpen ? 'opacity-100' : 'opacity-0'"
+                                      class="truncate overflow-hidden transition-opacity duration-500">Import Scans</span>
+                            </button>
+
+                        </li>
+                        <Separator class="m-y-1 w-full" orientation="horizontal"/>
+                        <li v-for="item in navigation" :key="item.name">
+                            <Link
+                                :class="[item.current ? 'bg-indigo-800 text-white' : 'text-gray-400 hover:bg-indigo-400/25 hover:text-white']"
+                                :href="item.href"
+                                class="p-2 flex items-center space-x-3 rounded-md text-sm font-semibold">
+                                <component :is="item.icon" aria-hidden="true" class="size-6 shrink-0"/>
+                                <span :class="sidebarOpen ? 'opacity-100' : 'opacity-0'"
+                                      class="transition-opacity duration-500">{{ item.name }}</span>
+                            </Link>
                         </li>
                     </ul>
                 </nav>
@@ -147,9 +166,9 @@ onUnmounted(() => {
                     {{ props.title }}
                 </h1>
 
-                <template v-if="$slots.header">
+                <template v-if="$slots.toolbar">
                     <div class="flex items-center">
-                        <slot name="header"/>
+                        <slot name="toolbar"/>
                     </div>
                 </template>
             </header>
@@ -161,4 +180,9 @@ onUnmounted(() => {
     </div>
 
     <ToastContainer :timeout="2500" position="top-right"/>
+
+    <ImportScansModal :show="showImportScanModal"
+                      @onCancel="showImportScanModal = false"
+                      @onUpload="showImportScanModal = false"/>
 </template>
+

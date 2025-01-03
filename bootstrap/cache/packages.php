@@ -65,6 +65,11 @@ return [
             0 => 'Pest\\Laravel\\PestServiceProvider',
         ],
     ],
+    'spatie/laravel-query-builder' => [
+        'providers' => [
+            0 => 'Spatie\\QueryBuilder\\QueryBuilderServiceProvider',
+        ],
+    ],
     'tightenco/ziggy' => [
         'providers' => [
             0 => 'Tighten\\Ziggy\\ZiggyServiceProvider',

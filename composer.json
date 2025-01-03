@@ -16,6 +16,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "pjmarshall1/laravel-commands": "^1.1",
+        "spatie/laravel-query-builder": "^6.3",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {

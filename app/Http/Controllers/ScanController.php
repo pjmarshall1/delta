@@ -4,13 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ScanResource;
 use App\Models\Scan;
+use Spatie\QueryBuilder\AllowedSort;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ScanController extends Controller
 {
     public function index()
     {
+        $scans = QueryBuilder::for(Scan::class)
+            ->defaultSort('-timestamp')
+            ->allowedSorts([
+                AllowedSort::field('date', 'timestamp'),
+                AllowedSort::field('premarket', 'p_count'),
+                AllowedSort::field('market', 'm_count'),
+                AllowedSort::field('aftermarket', 'a_count'),
+                'symbol', 'price', 'gap_percent', 'float', 'reviewed', 'short_interest', 'exchange', 'market_cap', 'list_date',
+            ])
+            ->paginate(25)->onEachSide(2)
+            ->appends(request()->query());
+
         return inertia('Scans/Index', [
-            'scans' => ScanResource::collection(Scan::orderBy('timestamp', 'desc')->paginate(25)->onEachSide(2)),
+            'scans' => ScanResource::collection($scans),
         ]);
     }
 

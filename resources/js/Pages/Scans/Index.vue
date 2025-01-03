@@ -1,7 +1,7 @@
 <script setup>
 import {useWindowSize} from "@vueuse/core";
 import {router} from "@inertiajs/vue3";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useScanColumns} from "@/Composables/useScanColumns.js";
 
 import {RiAddLine, RiCheckboxCircleFill, RiSettings4Line} from "vue-remix-icons";
@@ -20,21 +20,56 @@ const props = defineProps({
     scans: {
         type: Object,
         required: true,
-    }
+    },
 });
 
 const selectedScans = ref([]);
 const showColumnsModal = ref(false);
 const showImportModal = ref(false);
+const sort = ref({
+    field: '',
+    direction: '',
+});
 
 const handleScanSelected = (scanId) => {
     router.get(route('scans.show', {scan: scanId}));
 }
 
 const handleSortChanged = (sort) => {
-    console.log(sort);
+    const urlParams = new URLSearchParams(window.location.search);
+    const sortParam = urlParams.get('sort');
+
+    if (sort.field === 'alerts_count') {
+        sort.field = sortParam ? sortParam.replace(/^-/, '') : 'aftermarket';
+
+        if (sort.direction === 'asc') {
+            sort.field = sort.field === 'premarket' ? 'market' : sort.field === 'market' ? 'aftermarket' : 'premarket';
+        }
+    }
+
+    const param = sort.direction === 'asc' ? sort.field : `-${sort.field}`;
+    router.get(route('scans.index', {sort: param}));
 }
 
+onMounted(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sortParam = urlParams.get('sort');
+
+    if (sortParam) {
+        const field = sortParam.replace(/^-/, '');
+        const direction = sortParam.startsWith('-') ? 'desc' : 'asc';
+
+        sort.value = {
+            field: ['premarket', 'market', 'aftermarket'].includes(field) ? 'alerts_count' : field,
+            direction
+        };
+    } else {
+        sort.value = {
+            field: 'date',
+            direction: 'desc',
+        };
+    }
+})
 </script>
 
 <template>
@@ -62,9 +97,13 @@ const handleSortChanged = (sort) => {
                     <div class="w-full h-full overflow-y-auto" style="scrollbar-gutter: unset">
                         <div class="inline-block w-full align-middle">
                             <div class="relative">
-                                <DataTable :columns="visibleColumns"
+                                <DataTable v-if="visibleColumns?.length > 0"
+                                           :columns="visibleColumns"
                                            :rows="props.scans.data"
-                                           @rowSelected="handleScanSelected">
+                                           :sort="sort"
+                                           :sortable="true"
+                                           @rowSelected="handleScanSelected"
+                                           @sortChanged="handleSortChanged">
                                     <template #alerts_count="{data}">
                                         <div class="w-full flex items-center justify-center space-x-1">
                                             <span class="text-blue-700 text-xs font-medium">{{ data.p_count }}</span>

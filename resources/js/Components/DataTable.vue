@@ -1,5 +1,5 @@
 <script setup>
-import {computed, reactive} from 'vue';
+import {computed} from 'vue';
 
 const emit = defineEmits(['rowSelected', 'sortChanged'])
 
@@ -25,13 +25,16 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    sort: {
+        type: Object,
+        default: () => ({
+            field: '',
+            direction: '',
+        }),
+    },
 });
 
 const indeterminate = computed(() => selectedRows.value.length > 0 && selectedRows.value.length < props.rows.length)
-const sort = reactive({
-    field: '',
-    direction: '',
-})
 
 const formatValue = (type, value) => {
     switch (type) {
@@ -60,6 +63,8 @@ const handleSortClick = (column) => {
     if (!props.sortable) {
         return;
     }
+
+    const sort = {...props.sort};
 
     if (sort.field === column.field) {
         sort.direction = sort.direction === 'asc' ? 'desc' : 'asc';

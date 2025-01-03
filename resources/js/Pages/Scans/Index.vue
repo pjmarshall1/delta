@@ -2,16 +2,19 @@
 import {useWindowSize} from "@vueuse/core";
 import {router} from "@inertiajs/vue3";
 import {ref} from "vue";
+import {useScanColumns} from "@/Composables/useScanColumns.js";
 
-import {RiAddLine, RiCheckboxCircleFill} from "vue-remix-icons";
+import {RiAddLine, RiCheckboxCircleFill, RiSettings4Line} from "vue-remix-icons";
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Card from "@/Components/Card.vue";
 import ImportScansModal from "@/Components/Modals/ImportScansModal.vue";
 import Pagination from "@/Components/Pagination.vue";
 import DataTable from "@/Components/DataTable.vue";
+import ColumnsModal from "@/Components/Modals/ColumnsModal.vue";
 
 const {height} = useWindowSize();
+const {visibleColumns} = useScanColumns();
 
 const props = defineProps({
     scans: {
@@ -21,6 +24,7 @@ const props = defineProps({
 });
 
 const selectedScans = ref([]);
+const showColumnsModal = ref(false);
 const showImportModal = ref(false);
 
 const handleScanSelected = (scanId) => {
@@ -30,17 +34,6 @@ const handleScanSelected = (scanId) => {
 const handleSortChanged = (sort) => {
     console.log(sort);
 }
-
-const columns = [
-    {label: 'Date', field: 'date', type: 'date'},
-    {label: 'Symbol', field: 'symbol', strong: true},
-    {label: 'Price', field: 'price', type: 'currency'},
-    {label: 'Gap %', field: 'gap_percent', type: 'percent', sentiment: true},
-    {label: 'Float', field: 'float', type: 'scaledNumber'},
-    {label: 'Short Int.', field: 'short_interest', type: 'scaledNumber'},
-    {label: 'Alerts', field: 'alerts_count'},
-    {label: 'Reviewed', field: 'reviewed'},
-];
 
 </script>
 
@@ -59,10 +52,17 @@ const columns = [
         <div :style="`height: ${height - 104}px`" class="w-full">
             <Card class="h-full flex flex-col">
                 <div class="w-full overflow-hidden">
+                    <div class="h-12 w-full px-5 flex items-center justify-end">
+                        <button
+                            class="size-8 flex items-center justify-center text-gray-500 hover:text-gray-700 border border-gray-300 rounded hover:bg-gray-200"
+                            @click="showColumnsModal = true">
+                            <RiSettings4Line class="size-5"/>
+                        </button>
+                    </div>
                     <div class="w-full h-full overflow-y-auto" style="scrollbar-gutter: unset">
                         <div class="inline-block w-full align-middle">
                             <div class="relative">
-                                <DataTable :columns="columns"
+                                <DataTable :columns="visibleColumns"
                                            :rows="props.scans.data"
                                            @rowSelected="handleScanSelected">
                                     <template #alerts_count="{data}">
@@ -92,11 +92,18 @@ const columns = [
                             class="p-3 border-t"/>
             </Card>
         </div>
+
+        <ColumnsModal :columns="visibleColumns"
+                      :show="showColumnsModal"
+                      @onCancel="showColumnsModal = false"
+                      @onUpdate="showColumnsModal = false"/>
+
+        <ImportScansModal :show="showImportModal"
+                          @onCancel="showImportModal = false"
+                          @onUpload="showImportModal = false"/>
+
     </AuthenticatedLayout>
 
-    <ImportScansModal :show="showImportModal"
-                      @onCancel="showImportModal = false"
-                      @onUpload="showImportModal = false"/>
 </template>
 
 <style scoped>

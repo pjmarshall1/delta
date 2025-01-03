@@ -89,8 +89,8 @@ const handleToggleReviewed = () => {
             </div>
         </template>
 
-        <div class="grid grid-cols-12 gap-5">
-            <Card :style="`height: ${height - 104}px`" c class="col-span-4 overflow-hidden">
+        <div class="h-full w-full grid grid-cols-12 gap-5">
+            <Card class="col-span-4 overflow-hidden">
                 <TabContainer>
                     <Tab name="Details">
                         <div class="p-3 text-sm font-semibold">

@@ -1,7 +1,8 @@
 <script setup>
 import {Head, Link, router, usePage} from "@inertiajs/vue3";
 import {onMounted, onUnmounted} from "vue";
-import {useLocalStorage} from "@vueuse/core";
+import {useLocalStorage, useWindowSize} from "@vueuse/core";
+
 import {useToast} from '@/Composables/useToast.js';
 
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
@@ -12,6 +13,8 @@ import {RiArrowLeftSLine, RiDashboardLine, RiLogoutCircleLine, RiQrScan2Line, Ri
 
 const sidebarOpen = useLocalStorage('sidebarOpen', true);
 const {toast} = useToast();
+
+const {height} = useWindowSize();
 
 const props = defineProps({
     title: String,
@@ -151,7 +154,7 @@ onUnmounted(() => {
                 </template>
             </header>
 
-            <main class="w-full p-5">
+            <main :style="`height: ${height - 64}px`" class="w-full p-5 overflow-hidden">
                 <slot/>
             </main>
         </div>

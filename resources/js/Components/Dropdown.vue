@@ -51,7 +51,7 @@ const open = ref(false);
                  style="display: none" v-on:click="open = !autoClose"
             >
                 <div :class="contentClasses" class="rounded-md ring-1 ring-black ring-opacity-5 overflow-hidden">
-                    <slot name="content"/>
+                    <slot :active="open" name="content"/>
                 </div>
             </div>
         </Transition>

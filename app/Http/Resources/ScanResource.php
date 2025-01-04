@@ -33,7 +33,6 @@ class ScanResource extends JsonResource
             'exchange' => $this->exchange,
             'market_cap' => $this->market_cap,
             'list_date' => $this->list_date,
-
         ];
     }
 }

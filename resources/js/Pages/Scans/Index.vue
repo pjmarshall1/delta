@@ -1,6 +1,6 @@
 <script setup>
 import {router} from "@inertiajs/vue3";
-import {computed, onMounted, ref} from "vue";
+import {computed, ref} from "vue";
 import {useResizeObserver} from "@vueuse/core";
 import {useScanColumns} from "@/Composables/useScanColumns.js";
 
@@ -11,6 +11,7 @@ import Card from "@/Components/Card.vue";
 import Pagination from "@/Components/Pagination.vue";
 import DataTable from "@/Components/DataTable.vue";
 import ColumnsModal from "@/Components/Modals/ColumnsModal.vue";
+import FilterBar from "@/Pages/Scans/partials/FilterBar.vue";
 
 const {visibleColumns} = useScanColumns();
 
@@ -36,7 +37,6 @@ const data = computed(() => {
     });
 });
 
-const selectedScans = ref([]);
 const showColumnsModal = ref(false);
 const sort = ref({
     field: '',
@@ -63,33 +63,13 @@ const handleSortChanged = (sort) => {
     router.get(route('scans.index', {sort: param}));
 }
 
-onMounted(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const sortParam = urlParams.get('sort');
-
-    if (sortParam) {
-        const field = sortParam.replace(/^-/, '');
-        const direction = sortParam.startsWith('-') ? 'desc' : 'asc';
-
-        sort.value = {
-            field: ['premarket', 'market', 'aftermarket'].includes(field) ? 'alerts_count' : field,
-            direction
-        };
-    } else {
-        sort.value = {
-            field: 'date',
-            direction: 'desc',
-        };
-    }
-})
 </script>
 
 <template>
     <AuthenticatedLayout title="Scan Log">
-        <template v-slot:header>
-
+        <template v-slot:toolbar>
+            <FilterBar/>
         </template>
-
 
         <Card ref="cardElement" class="h-full w-full flex flex-col">
             <div class="w-full overflow-hidden">

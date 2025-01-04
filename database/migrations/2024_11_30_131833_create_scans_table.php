@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('exchange')->nullable();
             $table->bigInteger('market_cap')->nullable();
-            $table->dateTime('list_date')->nullable();
+            $table->date('list_date')->nullable();
             $table->timestamps();
         });
     }

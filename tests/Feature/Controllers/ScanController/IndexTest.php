@@ -24,3 +24,14 @@ it('passes scans to the view', function () {
         ->get(route('scans.index'))
         ->assertHasPaginatedResource('scans', ScanResource::collection($scans));
 });
+
+it('filters scans by date range', function () {
+    $this->withoutExceptionHandling();
+
+    $scan = Scan::factory()->create(['timestamp' => '2021-01-01 09:00:00']);
+    Scan::factory()->create(['timestamp' => '2021-01-02 09:00:00']);
+
+    actingAs(User::factory()->create())
+        ->get(route('scans.index', ['startDate' => '2021-01-01', 'endDate' => '2021-01-01']))
+        ->assertHasPaginatedResource('scans', ScanResource::collection([$scan]));
+});

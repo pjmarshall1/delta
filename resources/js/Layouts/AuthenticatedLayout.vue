@@ -167,7 +167,7 @@ onUnmounted(() => {
                 </h1>
 
                 <template v-if="$slots.toolbar">
-                    <div class="flex items-center">
+                    <div class="h-12 flex items-center justify-end space-x-2">
                         <slot name="toolbar"/>
                     </div>
                 </template>

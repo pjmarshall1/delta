@@ -6,6 +6,11 @@ return [
             0 => 'Inertia\\ServiceProvider',
         ],
     ],
+    'jerome/filterable' => [
+        'providers' => [
+            0 => 'Filterable\\Providers\\FilterableServiceProvider',
+        ],
+    ],
     'laravel/breeze' => [
         'providers' => [
             0 => 'Laravel\\Breeze\\BreezeServiceProvider',
@@ -63,11 +68,6 @@ return [
     'pestphp/pest-plugin-laravel' => [
         'providers' => [
             0 => 'Pest\\Laravel\\PestServiceProvider',
-        ],
-    ],
-    'spatie/laravel-query-builder' => [
-        'providers' => [
-            0 => 'Spatie\\QueryBuilder\\QueryBuilderServiceProvider',
         ],
     ],
     'tightenco/ziggy' => [

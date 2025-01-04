@@ -29,7 +29,7 @@ const open = ref(false);
 </script>
 
 <template>
-    <div>
+    <div class="relative">
         <div v-on:click="open = !open">
             <slot :active="open" name="trigger"/>
         </div>
@@ -50,7 +50,7 @@ const open = ref(false);
                  class="absolute z-50 rounded-md shadow-lg"
                  style="display: none" v-on:click="open = !autoClose"
             >
-                <div :class="contentClasses" class="rounded-md ring-1 ring-black ring-opacity-5">
+                <div :class="contentClasses" class="rounded-md ring-1 ring-black ring-opacity-5 overflow-hidden">
                     <slot name="content"/>
                 </div>
             </div>

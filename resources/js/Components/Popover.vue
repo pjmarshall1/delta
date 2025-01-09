@@ -6,13 +6,13 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
-    dropdownClasses: {
-        type: String,
-        default: 'mt-2 w-48',
+    contain: {
+        type: Boolean,
+        default: true,
     },
-    contentClasses: {
+    popoverClasses: {
         type: String,
-        default: 'bg-white',
+        default: 'mt-1 bg-white border border-gray-200 rounded-md shadow',
     },
 });
 
@@ -29,13 +29,13 @@ const open = ref(false);
 </script>
 
 <template>
-    <div class="relative">
+    <div :class="props.contain && 'relative'">
         <div v-on:click="open = !open">
             <slot :active="open" name="trigger"/>
         </div>
 
         <!-- Full Screen Dropdown Overlay -->
-        <div v-show="open" class="fixed inset-0 z-40" v-on:click="open = false"
+        <div v-show="open" class="fixed inset-0 z-10" v-on:click="open = false"
         ></div>
 
         <Transition
@@ -46,13 +46,11 @@ const open = ref(false);
             leave-from-class="opacity-100 scale-100"
             leave-to-class="opacity-0 scale-95"
         >
-            <div v-show="open" :class="dropdownClasses"
-                 class="absolute z-50 rounded-md shadow-lg"
-                 style="display: none" v-on:click="open = !autoClose"
+            <div v-show="open" :class="popoverClasses"
+                 class="absolute z-20 rounded-md shadow-lg"
+                 v-on:click="open = !autoClose"
             >
-                <div :class="contentClasses" class="rounded-md ring-1 ring-black ring-opacity-5 overflow-hidden">
-                    <slot :active="open" name="content"/>
-                </div>
+                <slot :active="open" name="content"/>
             </div>
         </Transition>
     </div>

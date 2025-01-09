@@ -5,7 +5,7 @@ import {useLocalStorage, useWindowSize} from "@vueuse/core";
 import {useToast} from '@/Composables/useToast.js';
 
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
-import Dropdown from "@/Components/Dropdown.vue";
+import Popover from "@/Components/Popover.vue";
 import ImportScansModal from "@/Components/Modals/ImportScansModal.vue";
 import ToastContainer from "@/Components/ToastContainer.vue";
 
@@ -115,7 +115,7 @@ onUnmounted(() => {
                 </nav>
 
                 <div class="mb-4 mt-auto px-4">
-                    <Dropdown contentClasses="py-1 bg-gray-700" dropdownClasses="bottom-12 mb-4 w-56">
+                    <Popover :contain="false" popoverClasses="bottom-12 mb-3 w-56 6py-1 bg-gray-700">
                         <template #trigger="{ active }">
                             <div
                                 :class="{'bg-indigo-400/25': active}"
@@ -153,7 +153,7 @@ onUnmounted(() => {
                                 </li>
                             </ul>
                         </template>
-                    </Dropdown>
+                    </Popover>
                 </div>
             </div>
         </div>

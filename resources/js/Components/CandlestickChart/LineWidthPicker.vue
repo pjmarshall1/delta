@@ -1,7 +1,7 @@
 <script setup>
 import {shallowRef, watch} from 'vue';
 import {RiArrowDownSLine} from 'vue-remix-icons';
-import Dropdown from "@/Components/Dropdown.vue";
+import Popover from "@/Components/Popover.vue";
 
 const model = defineModel(1);
 const activeItem = shallowRef(null);
@@ -18,7 +18,7 @@ watch(() => model.value, (value) => {
 </script>
 
 <template>
-    <Dropdown :autoClose="true" :dropdownClasses="'mt-2 w-24'">
+    <Popover :autoClose="true" popoverClasses="mt-2 w-24 bg-white">
         <template v-slot:trigger>
             <div
                 class="h-7 w-full p-1 flex items-center justify-between space-x-1 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset focus:ring-indigo-600">
@@ -36,5 +36,5 @@ watch(() => model.value, (value) => {
                 </li>
             </ul>
         </template>
-    </Dropdown>
+    </Popover>
 </template>

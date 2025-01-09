@@ -4,7 +4,7 @@ import {ref, watch} from "vue";
 import tinycolor from "tinycolor2";
 
 import {RiArrowDownSLine} from "vue-remix-icons";
-import Dropdown from "@/Components/Dropdown.vue";
+import Popover from "@/Components/Popover.vue";
 import DefaultColorsPanel from "@/Components/ColorPicker/DefaultColorsPanel.vue";
 import HuePanel from "@/Components/ColorPicker/HuePanel.vue";
 import HueSlider from "@/Components/ColorPicker/HueSlider.vue";
@@ -32,7 +32,7 @@ watch(() => model.value, (newValue, oldValue) => {
 </script>
 
 <template>
-    <Dropdown :autoClose="false" :dropdownClasses="'mt-1 left-0'">
+    <Popover :autoClose="false">
         <template v-slot:trigger>
             <div
                 class="h-7 w-full p-1 flex items-center justify-between rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset focus:ring-indigo-600">
@@ -60,7 +60,7 @@ watch(() => model.value, (newValue, oldValue) => {
                 </div>
             </div>
         </template>
-    </Dropdown>
+    </Popover>
 </template>
 
 <style scoped>

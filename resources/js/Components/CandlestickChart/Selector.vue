@@ -1,7 +1,7 @@
 <script setup>
 import {computed, nextTick, onMounted} from "vue";
 import {RiArrowDropDownFill, RiArrowDropUpFill, RiStarFill} from "vue-remix-icons";
-import Dropdown from "@/Components/Dropdown.vue";
+import Popover from "@/Components/Popover.vue";
 
 const model = defineModel();
 
@@ -29,8 +29,8 @@ const props = defineProps({
     },
 });
 
-const dropdownClasses = computed(() => {
-    return `right-0 ${props.up ? 'bottom-6' : 'top-6'} w-32`;
+const popoverClasses = computed(() => {
+    return `right-0 ${props.up ? 'bottom-6' : 'top-6'} w-32 py-px bg-gray-700`;
 });
 
 const handleIndicatorSelected = (item) => {
@@ -63,9 +63,7 @@ onMounted(async () => {
                 </button>
             </template>
         </div>
-        <Dropdown :autoClose="true"
-                  :dropdownClasses="dropdownClasses"
-                  contentClasses="py-1 bg-gray-700">
+        <Popover :autoClose="true" :popoverClasses>
             <template #trigger="{ active }">
                 <div
                     :class="[active ? 'text-gray-900' : 'text-gray-500', '-ml-1 text-xs font-semibold tracking-wide hover:text-gray-900']">
@@ -91,6 +89,6 @@ onMounted(async () => {
                     </li>
                 </ul>
             </template>
-        </Dropdown>
+        </Popover>
     </div>
 </template>

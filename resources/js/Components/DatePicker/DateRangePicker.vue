@@ -3,7 +3,7 @@ import {computed, nextTick, onMounted, reactive, watch} from 'vue';
 
 import {RiArrowDropDownLine, RiCalendar2Fill, RiCloseLine} from "vue-remix-icons";
 
-import Dropdown from "@/Components/Dropdown.vue";
+import Dropdown from "@/Components/Popover.vue";
 import CalendarView from "@/Components/DatePicker/CalendarView.vue";
 import QuickSelectView from "@/Components/DatePicker/QuickSelectView.vue";
 
@@ -44,8 +44,6 @@ const state = reactive({
     toVisibleDate: dayjs(),
 
 });
-
-const dropdownClasses = 'mt-2 right-0 bg-white';
 
 const triggerLabel = computed(() => {
     if (state.startDate && state.endDate) {
@@ -97,7 +95,8 @@ onMounted(() => {
 </script>
 
 <template>
-    <Dropdown :autoClose="false" :dropdownClasses>
+    <Dropdown :autoClose="false"
+              popoverClasses="right-0 mt-1 bg-white border border-gray-200 rounded-md shadow overflow-hidden">
         <template #trigger="{ active }">
             <div
                 :class="active ? 'bg-gray-100 ' : 'bg-white'"

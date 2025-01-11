@@ -1,6 +1,6 @@
 <script setup>
 import {router} from "@inertiajs/vue3";
-import {computed, ref} from "vue";
+import {ref} from "vue";
 import {useResizeObserver} from "@vueuse/core";
 import {useScanColumns} from "@/Composables/useScanColumns.js";
 
@@ -26,15 +26,6 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-});
-
-const data = computed(() => {
-    return props.scans.data.map(scan => {
-        return {
-            ...scan,
-            date: dayjs.utc(scan.timestamp).tz(dayjs.tz.guess()).format('MM-DD-YYYY HH:mm:ss'),
-        };
-    });
 });
 
 const showColumnsModal = ref(false);
@@ -83,7 +74,7 @@ const handleSortChanged = (sort) => {
                 <div :style="`height: ${cardHeight - 109}px`" class="w-full overflow-y-auto">
                     <DataTable v-if="visibleColumns?.length > 0"
                                :columns="visibleColumns"
-                               :rows="data"
+                               :rows="scans.data"
                                :sort="sort"
                                :sortable="true"
                                @rowSelected="handleScanSelected"

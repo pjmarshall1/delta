@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('scans', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('timestamp');
+            $table->date('date');
             $table->string('symbol');
             $table->bigInteger('price')->nullable();
             $table->bigInteger('gap_percent')->nullable();

@@ -13,7 +13,7 @@ class ScanResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'timestamp' => $this->timestamp,
+            'date' => $this->date,
             'symbol' => $this->symbol,
             'price' => $this->price,
             'gap_percent' => $this->gap_percent,

@@ -11,11 +11,11 @@ class ScanFilter extends Filter
 
     protected function startDate(string $date): Builder
     {
-        return $this->builder->whereDate('timestamp', '>=', $date);
+        return $this->builder->whereDate('date', '>=', $date);
     }
 
     protected function endDate(string $date): Builder
     {
-        return $this->builder->whereDate('timestamp', '<=', $date);
+        return $this->builder->whereDate('date', '<=', $date);
     }
 }

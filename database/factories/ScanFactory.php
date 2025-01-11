@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Scan;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Date;
 
 /**
  * @extends Factory<Scan>
@@ -19,7 +18,7 @@ class ScanFactory extends Factory
     public function definition(): array
     {
         return [
-            'timestamp' => Date::parse($this->faker->dateTime())->toDateTimeString(),
+            'date' => $this->faker->date('Y-m-d'),
             'symbol' => $this->faker->lexify('????'),
             'price' => $this->faker->numberBetween(100000, 999999),
             'gap_percent' => $this->faker->numberBetween(0, 10000),

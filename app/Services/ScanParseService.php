@@ -59,35 +59,22 @@ class ScanParseService
 
     public function extractData($rows): Collection
     {
-        return collect($rows)
-            ->filter(function ($row) {
-                try {
-                    Date::parse($this->date.' '.$row['Time'], 'America/New_York');
-                } catch (Exception $e) {
-                    return false;
-                }
+        return collect($rows)->map(function ($row) {
+            $symbol = Str::of($row['Symbol / News'])->after('https://www.warriortrading.com/quote/')->before('/');
 
-                return true;
-            })
-            ->map(function ($row) {
-                $symbol = Str::of($row['Symbol / News'])->after('https://www.warriortrading.com/quote/')->before('/');
-
-                $timestamp = Date::parse($this->date.' '.$row['Time'], 'America/New_York')
-                    ->utc()->toDateTimeString();
-
-                return [
-                    'timestamp' => $timestamp,
-                    'symbol' => $symbol->toString(),
-                    'price' => $row['Price'] * 10000,
-                    'volume' => $row['Volume'],
-                    'float' => $row['Float'],
-                    'relative_volume_daily' => round((float) $row['Relative Volume(Daily Rate)'], 2) * 100,
-                    'relative_volume_five' => round((float) $row['Relative Volume(5 min %)'], 2) * 100,
-                    'gap_percent' => round((float) $row['Gap(%)'] * 100),
-                    'change_percent' => round((float) $row['Change From Close(%)'] * 100),
-                    'short_interest' => $row['Short Interest'],
-                    'strategy_name' => $row['Strategy Name'],
-                ];
-            });
+            return [
+                'timestamp' => Date::parse($this->date.' '.$row['Time'], 'America/New_York')->setTimezone('UTC')->toDateTimeString(),
+                'symbol' => $symbol->toString(),
+                'price' => $row['Price'] * 10000,
+                'volume' => $row['Volume'],
+                'float' => $row['Float'],
+                'relative_volume_daily' => round((float) $row['Relative Volume(Daily Rate)'], 2) * 100,
+                'relative_volume_five' => round((float) $row['Relative Volume(5 min %)'], 2) * 100,
+                'gap_percent' => round((float) $row['Gap(%)'] * 100),
+                'change_percent' => round((float) $row['Change From Close(%)'] * 100),
+                'short_interest' => $row['Short Interest'],
+                'strategy_name' => $row['Strategy Name'],
+            ];
+        });
     }
 }

@@ -24,6 +24,7 @@ class ScanAlertFactory extends Factory
             'relative_volume_five' => $this->faker->randomNumber(),
             'gap_percent' => $this->faker->randomNumber(),
             'change_percent' => $this->faker->randomNumber(),
+            'reviwed' => false,
             'short_interest' => $this->faker->randomNumber(),
             'strategy_name' => $this->faker->name(),
             'created_at' => Carbon::now(),

@@ -11,7 +11,7 @@ class ScanController extends Controller
     public function index(ScanFilter $filter)
     {
         $scans = Scan::filter($filter)
-            ->orderBy('timestamp', 'desc')
+            ->orderBy('date', 'desc')
             ->paginate(25)->onEachSide(2)
             ->appends(request()->query());
 
@@ -23,8 +23,8 @@ class ScanController extends Controller
     public function show(Scan $scan)
     {
         $meta = [
-            'previousUrl' => Scan::where('timestamp', '>', $scan->timestamp)->orderBy('timestamp', 'asc')->first()?->path,
-            'nextUrl' => Scan::where('timestamp', '<', $scan->timestamp)->orderBy('timestamp', 'desc')->first()?->path,
+            'previousUrl' => Scan::where('id', '>', $scan->id)->orderBy('id', 'asc')->first()?->path,
+            'nextUrl' => Scan::where('id', '<', $scan->id)->orderBy('id', 'desc')->first()?->path,
         ];
 
         return inertia('Scans/Show', [

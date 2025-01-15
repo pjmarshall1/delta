@@ -102,7 +102,7 @@ onMounted(() => {
                 :class="active ? 'bg-gray-100 ' : 'bg-white'"
                 class="h-9 min-w-40 relative flex justify-between items-center space-x-2 px-4 py-2 rounded-md shadow-sm hover:bg-gray-100 cursor-pointer transition ease-in-out duration-150 ring-1 ring-inset ring-gray-300 focus:outline-none"
             >
-                <RiCalendar2Fill class="size-5 text-indigo-500"/>
+                <RiCalendar2Fill class="size-4 text-indigo-500"/>
 
                 <span :class="triggerLabel ? 'text-gray-700' : 'text-gray-500'"
                       class="flex-1 w-full font-semibold text-left  text-xs">{{ triggerLabel }}</span>

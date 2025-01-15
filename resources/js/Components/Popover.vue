@@ -1,5 +1,7 @@
 <script setup>
-import {onMounted, onUnmounted, ref} from 'vue';
+import {onMounted, onUnmounted, ref, watch} from 'vue';
+
+const emit = defineEmits(['onClose', 'onOpen']);
 
 const props = defineProps({
     autoClose: {
@@ -26,6 +28,14 @@ onMounted(() => document.addEventListener('keydown', closeOnEscape));
 onUnmounted(() => document.removeEventListener('keydown', closeOnEscape));
 
 const open = ref(false);
+
+watch(() => open.value, (value) => {
+    if (value) {
+        emit('onOpen');
+    } else {
+        emit('onClose');
+    }
+});
 </script>
 
 <template>

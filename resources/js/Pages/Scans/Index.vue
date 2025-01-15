@@ -1,19 +1,21 @@
 <script setup>
+import {ref, watch} from "vue";
 import {router} from "@inertiajs/vue3";
-import {ref} from "vue";
 import {useResizeObserver} from "@vueuse/core";
 import {useScanColumns} from "@/Composables/useScanColumns.js";
+import {useScanFilterStore} from "@/Stores/ScanFilterStore.js";
 
 import {RiCheckboxCircleFill, RiSettings4Line} from "vue-remix-icons";
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Card from "@/Components/Card.vue";
-import Pagination from "@/Components/Pagination.vue";
-import DataTable from "@/Components/DataTable.vue";
 import ColumnsModal from "@/Components/Modals/ColumnsModal.vue";
+import DataTable from "@/Components/DataTable.vue";
 import FilterBar from "@/Pages/Scans/partials/FilterBar.vue";
+import Pagination from "@/Components/Pagination.vue";
 
 const {visibleColumns} = useScanColumns();
+const scanFilterStore = useScanFilterStore();
 
 const cardElement = ref(null);
 const cardHeight = ref(0);
@@ -22,6 +24,10 @@ useResizeObserver(cardElement, (entries) => {
 });
 
 const props = defineProps({
+    filterOptions: {
+        type: Object,
+        required: true,
+    },
     scans: {
         type: Object,
         required: true,
@@ -29,30 +35,26 @@ const props = defineProps({
 });
 
 const showColumnsModal = ref(false);
-const sort = ref({
-    field: '',
-    direction: '',
-});
+const sort = ref(scanFilterStore.sorting);
 
 const handleScanSelected = (scanId) => {
     router.get(route('scans.show', {scan: scanId}));
 }
 
 const handleSortChanged = (sort) => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const sortParam = urlParams.get('sort');
-
-    if (sort.field === 'alerts_count') {
-        sort.field = sortParam ? sortParam.replace(/^-/, '') : 'aftermarket';
-
-        if (sort.direction === 'asc') {
-            sort.field = sort.field === 'premarket' ? 'market' : sort.field === 'market' ? 'aftermarket' : 'premarket';
-        }
-    }
-
-    const param = sort.direction === 'asc' ? sort.field : `-${sort.field}`;
-    router.get(route('scans.index', {sort: param}));
+    scanFilterStore.setSorting(sort);
 }
+
+watch(() => props.filterOptions, (options) => {
+    Object.keys(options).forEach(key => {
+        scanFilterStore.options.forEach(option => {
+            if (option.key === key) {
+                option.value = options[key];
+            }
+        });
+    });
+
+}, {immediate: true});
 
 </script>
 
@@ -79,15 +81,17 @@ const handleSortChanged = (sort) => {
                                :sortable="true"
                                @rowSelected="handleScanSelected"
                                @sortChanged="handleSortChanged">
+
                         <template #alerts_count="{data}">
                             <div class="w-full flex items-center justify-center space-x-1">
-                                <span class="text-blue-700 text-xs font-medium">{{ data.p_count }}</span>
+                                <span class="text-blue-700 text-xs font-medium">{{ data.pre_market }}</span>
                                 <span class="-mt-0.5 text-xs text-gray-700">•</span>
-                                <span class="text-green-700 text-xs font-medium">{{ data.m_count }}</span>
+                                <span class="text-green-700 text-xs font-medium">{{ data.open_market }}</span>
                                 <span class="-mt-0.5 text-xs text-gray-700">•</span>
-                                <span class="text-red-700 text-xs font-medium">{{ data.a_count }}</span>
+                                <span class="text-red-700 text-xs font-medium">{{ data.after_market }}</span>
                             </div>
                         </template>
+
                         <template #reviewed="{data}">
                             <div class="w-full h-full flex items-center justify-center">
                                 <RiCheckboxCircleFill

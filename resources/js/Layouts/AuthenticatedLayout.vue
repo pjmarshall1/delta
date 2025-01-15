@@ -3,10 +3,12 @@ import {Head, Link, router, usePage} from "@inertiajs/vue3";
 import {onMounted, onUnmounted, ref} from "vue";
 import {useLocalStorage, useWindowSize} from "@vueuse/core";
 import {useToast} from '@/Composables/useToast.js';
+import {useScanFilterStore} from "@/Stores/ScanFilterStore.js";
 
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
-import Popover from "@/Components/Popover.vue";
 import ImportScansModal from "@/Components/Modals/ImportScansModal.vue";
+import Popover from "@/Components/Popover.vue";
+import Separator from "@/Components/Separator.vue";
 import ToastContainer from "@/Components/ToastContainer.vue";
 
 import {
@@ -17,12 +19,11 @@ import {
     RiQrScan2Line,
     RiUser3Line
 } from "vue-remix-icons";
-import Separator from "@/Components/Separator.vue";
-
-const sidebarOpen = useLocalStorage('sidebarOpen', true);
-const {toast} = useToast();
 
 const {height} = useWindowSize();
+const scanFilterStore = useScanFilterStore();
+const sidebarOpen = useLocalStorage('sidebarOpen', true);
+const {toast} = useToast();
 
 const props = defineProps({
     title: String,
@@ -39,7 +40,7 @@ const navigation = [
     },
     {
         name: 'Scans',
-        href: route('scans.index'),
+        href: route('scans.index', scanFilterStore.queryParams),
         icon: RiQrScan2Line,
         current: route().current('scans.index')
     }

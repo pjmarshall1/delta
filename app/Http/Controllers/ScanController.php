@@ -10,6 +10,11 @@ class ScanController extends Controller
 {
     public function index(ScanFilter $filter)
     {
+        $filterOptions = [
+            'symbol' => Scan::select('symbol')->distinct()->orderBy('symbol')->pluck('symbol')
+                ->map(fn ($symbol) => ['name' => $symbol, 'value' => $symbol]),
+        ];
+
         $scans = Scan::filter($filter)
             ->orderBy('date', 'desc')
             ->paginate(25)->onEachSide(2)
@@ -17,6 +22,7 @@ class ScanController extends Controller
 
         return inertia('Scans/Index', [
             'scans' => ScanResource::collection($scans),
+            'filterOptions' => $filterOptions,
         ]);
     }
 

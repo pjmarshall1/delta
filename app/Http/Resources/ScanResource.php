@@ -20,9 +20,9 @@ class ScanResource extends JsonResource
             'float' => $this->float,
             'short_interest' => $this->short_interest,
             'alerts_count' => [
-                'p_count' => $this->p_count,
-                'm_count' => $this->m_count,
-                'a_count' => $this->a_count,
+                'pre_market' => $this->p_count,
+                'open_market' => $this->m_count,
+                'after_market' => $this->a_count,
             ],
             'reviewed' => $this->reviewed,
             'path' => $this->path,

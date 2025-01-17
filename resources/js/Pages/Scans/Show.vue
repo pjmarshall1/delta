@@ -8,11 +8,11 @@ import {RiArrowLeftSLine, RiArrowRightSLine, RiCheckboxCircleFill, RiExpandDiago
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import CandlestickChartWrapper from "@/Components/CandlestickChart/CandlestickChartWrapper.vue";
 import Card from "@/Components/Card.vue";
-import Separator from "@/Components/Separator.vue";
-import Tab from "@/Components/Tabs/Tab.vue";
-import TabContainer from "@/Components/Tabs/TabContainer.vue";
+import List from "@/Components/List.vue";
 import ScanAlertsTable from "@/Components/Tables/ScanAlertsTable.vue";
 import ScanAlertsTableModal from "@/Components/Modals/ScanAlertsTableModal.vue";
+import Tab from "@/Components/Tabs/Tab.vue";
+import TabContainer from "@/Components/Tabs/TabContainer.vue";
 
 const {height} = useWindowSize();
 
@@ -35,6 +35,21 @@ const alerts = computed(() => {
         };
     });
 });
+
+const listItems = computed(() => {
+    return [
+        {label: 'Exchange', value: props.scan.exchange},
+        {label: 'List Date', value: dayjs(props.scan.list_date).format('MMM DD, YYYY')},
+        {label: 'Market Cap', value: numeral(props.scan.market_cap).format('0,0[.][00]a')},
+        {label: 'Float', value: numeral(props.scan.float).format('0,0[.][00]a')},
+        {label: 'Short Interest', value: numeral(props.scan.short_interest).format('0,0[.][00]a')},
+        {label: 'Price', value: numeral(props.scan.price / 10000).format('$0,0[.][0000]')},
+        {
+            label: 'Gap', value: numeral(props.scan.gap_percent / 10000).format('0[.][00]%'),
+            color: props.scan.gap_percent > 0 ? 'text-green-600' : 'text-red-600',
+        },
+    ];
+})
 
 const markers = computed(() => {
     return {
@@ -74,7 +89,7 @@ const handleToggleReviewed = () => {
                         }}</span>
                 </button>
 
-                <Separator/>
+                <div class="h-3/4 w-0.5 bg-gray-300"/>
 
                 <Link :disabled="! meta.previousUrl" :href="meta.previousUrl" as="button"
                       class="p-1 rounded-full text-gray-600 hover:bg-gray-200 disabled:hover:bg-transparent disabled:text-gray-400">
@@ -94,52 +109,7 @@ const handleToggleReviewed = () => {
                         <div class="p-3 text-sm font-semibold">
                             {{ scan.name }}
                         </div>
-                        <dl class="px-2">
-                            <div class="p-3 flex items-center justify-between">
-                                <dt class="text-sm font-semibold tracking-wide text-gray-500">Exchange</dt>
-                                <dd class="text-sm font-medium tracking-wide text-gray-700">
-                                    {{ scan.exchange }}
-                                </dd>
-                            </div>
-                            <div class="p-3 flex items-center justify-between">
-                                <dt class="text-sm font-semibold tracking-wide text-gray-500">List Date</dt>
-                                <dd class="text-sm font-medium tracking-wide text-gray-700">
-                                    {{ dayjs(scan.list_date).format('MMM DD, YYYY') }}
-                                </dd>
-                            </div>
-                            <div class="p-3 flex items-center justify-between">
-                                <dt class="text-sm font-semibold tracking-wide text-gray-500">Market Cap</dt>
-                                <dd class="text-sm font-medium tracking-wide text-gray-700">
-                                    {{ numeral(scan.market_cap).format('0,0[.][00]a') }}
-                                </dd>
-                            </div>
-                            <div class="p-3 flex items-center justify-between">
-                                <dt class="text-sm font-semibold tracking-wide text-gray-500">Float</dt>
-                                <dd class="text-sm font-medium tracking-wide text-gray-700">
-                                    {{ numeral(scan.float).format('0,0[.][00]a') }}
-                                </dd>
-                            </div>
-                            <div class="p-3 flex items-center justify-between">
-                                <dt class="text-sm font-semibold tracking-wide text-gray-500">Short Interest</dt>
-                                <dd class="text-sm font-medium tracking-wide text-gray-700">
-                                    {{ numeral(scan.short_interest).format('0,0[.][00]a') }}
-                                </dd>
-                            </div>
-                            <Separator orientation="horizontal"/>
-                            <div class="p-3 flex items-center justify-between">
-                                <dt class="text-sm font-semibold tracking-wide text-gray-500">Price</dt>
-                                <dd class="text-sm font-medium tracking-wide text-gray-700">
-                                    {{ numeral(scan.price / 10000).format('$0,0[.][0000]') }}
-                                </dd>
-                            </div>
-                            <div class="p-3 flex items-center justify-between">
-                                <dt class="text-sm font-semibold tracking-wide text-gray-500">Gap</dt>
-                                <dd :class="scan.gap_percent > 0 ? 'text-green-500' : 'text-red-500'"
-                                    class="text-sm font-medium tracking-wide text-gray-700">
-                                    {{ numeral(scan.gap_percent / 10000).format('0[.][00]%') }}
-                                </dd>
-                            </div>
-                        </dl>
+                        <List :items="listItems"/>
                     </Tab>
                     <Tab name="Alerts">
                         <div
@@ -165,7 +135,7 @@ const handleToggleReviewed = () => {
                 </TabContainer>
             </Card>
             <div class="col-span-8">
-                <Card class="aspect-video">
+                <Card class="size-full max-h-719">
                     <CandlestickChartWrapper
                         :date="scan.date"
                         :markers="[markers]"

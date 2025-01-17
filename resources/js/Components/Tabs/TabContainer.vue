@@ -37,8 +37,8 @@ provide('getActiveTabIndex', getActiveTabIndex);
             <button
                 v-for="(tab, index) in tabs"
                 :key="index"
-                :class="activeTab === index ? 'text-gray-800' : 'text-gray-500 hover:text-gray-800'"
-                class="tab-header flex-1 text-center px-4 py-2 text-sm font-medium transition relative"
+                :class="activeTab === index ? 'text-indigo-600' : 'text-gray-500 hover:text-gray-800'"
+                class="tab-header flex-1 text-center px-4 py-2 text-sm font-semibold transition relative whitespace-nowrap"
                 @click="activeTab = index"
             >
                 {{ tab.name }}

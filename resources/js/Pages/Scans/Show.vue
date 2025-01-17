@@ -1,7 +1,7 @@
 <script setup>
 import {computed, ref} from "vue";
 import {useWindowSize} from "@vueuse/core";
-import {router, useForm} from "@inertiajs/vue3"
+import {Link, useForm} from "@inertiajs/vue3"
 
 import {RiArrowLeftSLine, RiArrowRightSLine, RiCheckboxCircleFill, RiExpandDiagonalLine} from "vue-remix-icons";
 
@@ -76,16 +76,14 @@ const handleToggleReviewed = () => {
 
                 <Separator/>
 
-                <button :disabled="! meta.previousUrl"
-                        class="p-1 rounded-full text-gray-600 hover:bg-gray-200 disabled:hover:bg-transparent disabled:text-gray-400"
-                        @click="router.get(meta.previousUrl)">
+                <Link :disabled="! meta.previousUrl" :href="meta.previousUrl" as="button"
+                      class="p-1 rounded-full text-gray-600 hover:bg-gray-200 disabled:hover:bg-transparent disabled:text-gray-400">
                     <RiArrowLeftSLine class="mr-px w-5 h-5"/>
-                </button>
-                <button :disabled="!meta.nextUrl"
-                        class="p-1 rounded-full text-gray-600 hover:bg-gray-200 disabled:hover:bg-transparent disabled:text-gray-400"
-                        @click="router.get(meta.nextUrl)">
+                </Link>
+                <Link :disabled="!meta.nextUrl" :href="meta.nextUrl" as="button"
+                      class="p-1 rounded-full text-gray-600 hover:bg-gray-200 disabled:hover:bg-transparent disabled:text-gray-400">
                     <RiArrowRightSLine class="ml-px w-5 h-5"/>
-                </button>
+                </Link>
             </div>
         </template>
 

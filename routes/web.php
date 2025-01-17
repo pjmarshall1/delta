@@ -16,8 +16,10 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-    Route::get('/scans', [ScanController::class, 'index'])->name('scans.index');
-    Route::get('/scans/{scan}', [ScanController::class, 'show'])->name('scans.show');
+    Route::get('/scans', [ScanController::class, 'index'])->name('scans.index')
+        ->middleware('query:scans');
+    Route::get('/scans/{scan}', [ScanController::class, 'show'])->name('scans.show')
+        ->middleware('query:scans');
     Route::post('/scans/{scan}/update', [ScanController::class, 'update'])->name('scans.update');
     Route::post('/scans/import', ScanImportController::class)->name('scans.import');
 

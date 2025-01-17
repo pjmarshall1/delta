@@ -15,10 +15,9 @@ class ScanController extends Controller
                 ->map(fn ($symbol) => ['name' => $symbol, 'value' => $symbol]),
         ];
 
-        $scans = Scan::filter($filter)
-            ->orderBy('date', 'desc')
+        $scans = Scan::filter($filter)->orderBy('id', 'desc')
             ->paginate(25)->onEachSide(2)
-            ->appends(request()->query());
+            ->withQueryString();
 
         return inertia('Scans/Index', [
             'scans' => ScanResource::collection($scans),
@@ -26,11 +25,15 @@ class ScanController extends Controller
         ]);
     }
 
-    public function show(Scan $scan)
+    public function show(Scan $scan, ScanFilter $filter)
     {
+        $scans = Scan::filter($filter)->orderBy('id', 'desc')->get();
+
+        $activeIndex = $scans->search(fn ($s) => $s->id === $scan->id);
+
         $meta = [
-            'previousUrl' => Scan::where('id', '>', $scan->id)->orderBy('id', 'asc')->first()?->path,
-            'nextUrl' => Scan::where('id', '<', $scan->id)->orderBy('id', 'desc')->first()?->path,
+            'previousUrl' => $activeIndex > 0 ? $scans->get($activeIndex - 1)->path : '',
+            'nextUrl' => $activeIndex < $scans->count() - 1 ? $scans->get($activeIndex + 1)->path : '',
         ];
 
         return inertia('Scans/Show', [
